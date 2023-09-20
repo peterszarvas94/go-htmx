@@ -14,12 +14,8 @@ type Name struct {
 }
 
 type Item struct {
+	Id   int
 	Text string
-}
-
-type Page struct {
-	Name  string
-	Items []Item
 }
 
 type ItemsData struct {
@@ -40,9 +36,9 @@ func main() {
 
 func getData() []Item {
 	return []Item{
-		{Text: "Item 1"},
-		{Text: "Item 2"},
-		{Text: "Item 3"},
+		{Id: 1, Text: "Item 1"},
+		{Id: 2, Text: "Item 2"},
+		{Id: 3, Text: "Item 3"},
 	}
 }
 
@@ -61,8 +57,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		os.Exit(1)
 	}
 
-	data := Page{
-		Name:  "John Smith",
+	data := ItemsData{
 		Items: getData(),
 	}
 	err = tmpl.Execute(w, data)

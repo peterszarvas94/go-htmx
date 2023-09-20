@@ -1,20 +1,39 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+  <head>
+    <title>Go Web Server</title>
+    <script src="https://unpkg.com/htmx.org@1.9.5"></script>
+    <link rel="stylesheet" type="text/css" href="../static/style.css" />
+  </head>
 
-<head>
-  <title>Go Web Server</title>
-  <script src="https://unpkg.com/htmx.org@1.9.5"></script>
-  <link rel="stylesheet" type="text/css" href="../static/style.css">
-</head>
-
-<body>
-  <h1>Hello, {{.Name}}! This is a Go Web Server</h1>
-  <form hx-post="/items/" hx-target="#items" hx-swap="beforeend">
-    <input name="text" placeholder="new item">
-    <button type="submit">Submit</button>
-    <button type="button" hx-get="/items/" hx-target="#items" hx-swap="outerHTML">Reset</button>
-  </form>
-  {{template "items" .}}
-</body>
-
-</htmlt>
+  <body class="p-2">
+    <form
+      hx-post="/items/"
+      hx-target="#items"
+      hx-swap="beforeend"
+      class="flex gap-2"
+    >
+      <input
+        name="text"
+        placeholder="new item"
+        class="border border-black rounded-md p-1"
+      />
+      <button
+        type="submit"
+        class="bg-green-200 border border-black rounded p-1"
+      >
+        Submit
+      </button>
+      <button
+        type="button"
+        class="bg-blue-200 border border-black rounded p-1"
+        hx-get="/items/"
+        hx-target="#items"
+        hx-swap="outerHTML"
+      >
+        Reset
+      </button>
+    </form>
+    {{template "items" .}}
+  </body>
+</html>

@@ -1,9 +1,5 @@
-{{template "items" .}}
-
-{{define "items"}}
+{{template "items" .}} {{define "items"}}
 <ul id="items">
-  {{range .Items}}
-  {{template "item" .}}
-  {{end}}
+  {{range .Items}} {{template "item" .}} {{end}}
 </ul>
 {{end}}
