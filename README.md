@@ -8,4 +8,10 @@
 ## Commands
 
 - `make dev` - start dev server on port 3000
-- `make tw-watch` - generate tailt wind styles for dev
+- `make tw-watch` - generate tailwind styles for dev
+
+## Todo
+
+- [ ] db connection
+- [ ] env
+- [ ] production
