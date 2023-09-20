@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Go Web Server</title>
+  <script src="https://unpkg.com/htmx.org@1.9.5"></script>
+  <link rel="stylesheet" type="text/css" href="../static/style.css">
+</head>
+
+<body>
+  <h1>Hello, {{.Name}}! This is a Go Web Server</h1>
+  <form hx-post="/items/" hx-target="#items" hx-swap="beforeend">
+    <input name="text" placeholder="new item">
+    <button type="submit">Submit</button>
+    <button type="button" hx-get="/items/" hx-target="#items" hx-swap="outerHTML">Reset</button>
+  </form>
+  {{template "items" .}}
+</body>
+
+</htmlt>
