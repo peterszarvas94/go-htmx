@@ -128,7 +128,12 @@ func itemshandler(w http.ResponseWriter, r *http.Request) {
 	if len(path) == 2 && r.Method == "GET" {
 		id, err := strconv.Atoi(path[1])
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(w, "Invalid Id", http.StatusInternalServerError)
+			return
+		}
+
+		if id > len(getData()) || id < 1 {
+			http.Error(w, "Item not found", http.StatusNotFound)
 			return
 		}
 
@@ -139,7 +144,7 @@ func itemshandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		data := Item{
-			Text: fmt.Sprintf("Item %d", id),
+			Text: getData()[id-1].Text,
 		}
 
 		err = tmpl.Execute(w, data)
