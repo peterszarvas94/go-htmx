@@ -12,6 +12,7 @@
 
 ## Todo
 
-- [ ] db connection
-- [ ] env
+- [x] db connection
+- [x] env
+- [ ] orm?
 - [ ] production
