@@ -1,12 +1,15 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"html/template"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
+
+	_ "github.com/libsql/libsql-client-go/libsql"
 )
 
 type Name struct {
@@ -23,9 +26,54 @@ type ItemsData struct {
 }
 
 func main() {
+	// get database url and token from environment variables
+	url, url_err := os.LookupEnv("DB_URL");
+	if url_err != true {
+		fmt.Println("Error:", url_err)
+		os.Exit(1)
+	}
+
+	token, token_err := os.LookupEnv("DB_TOKEN");
+	if token_err != true {
+		fmt.Println("Error:", token_err)
+		os.Exit(1)
+	}
+
+	// create database connection
+	connectionStr := fmt.Sprintf("%s?authToken=%s", url, token)
+	fmt.Println("Connection:", connectionStr)
+
+	db, db_err := sql.Open("libsql", connectionStr)
+	if db_err != nil {
+		fmt.Println("Error:", db_err)
+		os.Exit(1)
+	}
+
+	// db.Query("create table if not exists todos (id int, text string)");
+	// db.Query("insert into todos (id, text) values (2, 'Item 2')");
+
+	todos, todos_err := db.Query("select * from todos")
+	if todos_err != nil {
+		fmt.Println("Error:", todos_err)
+		os.Exit(1)
+	}
+	for todos.Next() {
+		var id int
+		var text string
+		err := todos.Scan(&id, &text)
+		if err != nil {
+			fmt.Println("Error:", err)
+			os.Exit(1)
+		}
+		fmt.Println(id, text)
+	}
+
+
+	// handle static files
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
+	// handle routes
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/items/", itemshandler)
 	err := http.ListenAndServe(":8080", nil)
@@ -34,6 +82,7 @@ func main() {
 	}
 }
 
+// mock data
 func getData() []Item {
 	return []Item{
 		{Id: 1, Text: "Item 1"},
