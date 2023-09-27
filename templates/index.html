@@ -25,15 +25,6 @@
       >
         Submit
       </button>
-      <button
-        type="button"
-        class="bg-blue-200 border border-black rounded p-1"
-        hx-get="/todos/"
-        hx-target="#todos"
-        hx-swap="outerHTML"
-      >
-        Reset
-      </button>
     </form>
     {{template "todos" .}}
   </body>
