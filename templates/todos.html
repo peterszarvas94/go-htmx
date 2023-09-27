@@ -1,0 +1,5 @@
+{{template "todos" .}} {{define "todos"}}
+<ul id="todos">
+  {{range .Todos}} {{template "todo" .}} {{end}}
+</ul>
+{{end}}

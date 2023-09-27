@@ -1,6 +1,3 @@
-# Define the default target
-.DEFAULT_GOAL := dev
-
 # Define environment variables file
 ENV_FILE := .env
 
