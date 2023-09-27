@@ -16,3 +16,4 @@
 - [x] env
 - [ ] orm?
 - [ ] production
+- [x] add jwt

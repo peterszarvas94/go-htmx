@@ -1,0 +1,15 @@
+{{template "base" .}}
+{{define "base"}}
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Go Web Server</title>
+    <script src="https://unpkg.com/htmx.org@1.9.5"></script>
+    <link rel="stylesheet" type="text/css" href="../static/style.css" />
+  </head>
+
+  <body class="flex flex-col p-2 gap-2">
+    {{template "content" .}}
+  </body>
+</html>
+{{end}}

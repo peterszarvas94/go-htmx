@@ -1,0 +1,11 @@
+{{define "content"}}
+<a
+  class="bg-blue-200 border border-black rounded p-1 w-fit cursor-pointer"
+  hx-post="/auth/"
+  hx-swap="innerHTML"
+  hx-target="body"
+  hx-push-url="true"
+>
+  Login / Signup
+</a>
+{{end}}

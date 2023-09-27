@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"go-htmx/handlers"
 )
 
 func main() {
@@ -11,8 +12,9 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	// handle routes
-	http.HandleFunc("/", IndexHandler)
-	http.HandleFunc("/todos/", TodosHandler)
+	http.HandleFunc("/", handlers.IndexHandler)
+	http.HandleFunc("/todos/", handlers.TodosHandler)
+	http.HandleFunc("/auth/", handlers.AuthHandler)
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		fmt.Println("Error:", err)
