@@ -22,14 +22,16 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	var LoggedIn bool
 	if token == "" {
-		fmt.Println("Error: JWT not found")
+		LoggedIn = false
 	} else {
-		claims, err := utils.ValidateToken(token)
+		_, err := utils.ValidateToken(token)
 		if err != nil {
-			fmt.Println("Error:", err)
+			LoggedIn = false
+		} else {
+			LoggedIn = true
 		}
-		fmt.Println("Claims:", claims["sub"])
 	}
 
 	base := "templates/base.html"
@@ -44,6 +46,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	data := utils.Data{
 		Todos: utils.GetTodos(),
+		LoggedIn: LoggedIn,
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")

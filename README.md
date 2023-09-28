@@ -17,3 +17,4 @@
 - [ ] orm?
 - [ ] production
 - [x] add jwt
+- [ ] rewrite login / signup with form (no boost)

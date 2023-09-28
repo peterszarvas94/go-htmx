@@ -1,0 +1,32 @@
+{{define "content"}}
+<form method="post" class="flex flex-col gap-2 flex-wrap max-w-md">
+  <input
+    name="username"
+    class="border border-black rounded p-1"
+    placeholder="Username"
+    value="{{.Username}}"
+    required
+  />
+  <input
+    name="email"
+    type="email"
+    class="border border-black rounded p-1"
+    placeholder="Email"
+    value="{{.Email}}"
+    required
+  />
+  <input
+    name="password"
+    type="password"
+    class="border border-black rounded p-1"
+    placeholder="Password"
+    required
+  />
+  <button
+    type="submit"
+    class="bg-blue-200 border border-black rounded p-1 w-fit"
+  >
+    Sign up
+  </button>
+</form>
+{{if .Error}} {{template "error" .Error}} {{end}} {{end}}

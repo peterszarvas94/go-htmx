@@ -2,6 +2,7 @@ package utils
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"os"
 
@@ -131,4 +132,59 @@ func DeleteTodoById(id int) {
 		fmt.Println("Error:", err)
 		os.Exit(1)
 	}
+}
+
+func NewUser(username string, email string, password string) (bool, error) {
+	db := db()
+
+	hashedPassword, hashErr := HashPassword(password)
+	if hashErr != nil {
+		return false, hashErr
+	}
+
+	_, dbErr := db.Exec(
+		"INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
+		username, email, hashedPassword,
+	)
+	if dbErr != nil {
+		return false, dbErr
+	}
+
+	return true, nil
+}
+
+func GetUserByUsernameOrEmail(usernameOrEmail string, password string) (bool, error) {
+	db := db()
+
+	query, queryErr := db.Query(
+		"SELECT id, username, email, password as hash FROM users WHERE username = ? OR email = ?",
+		usernameOrEmail, usernameOrEmail,
+	)
+	if queryErr != nil {
+		return false, queryErr
+	}
+
+	var id int
+	var username string
+	var email string
+	var hash string
+
+	for query.Next() {
+		scanErr := query.Scan(&id, &username, &email, &hash)
+		if scanErr!= nil {
+			return false, scanErr
+		}
+	}
+
+	notFoundErr := errors.New("User not found")
+	if id == 0 {
+		return false, notFoundErr
+	}
+
+	match, matchErr := CheckPasswordHash(hash, password)
+
+	if match {
+		return true, nil
+	}
+	return false, matchErr
 }

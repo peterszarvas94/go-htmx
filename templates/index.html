@@ -1,12 +1,26 @@
 {{define "content"}}
-<a
-  type="button"
-  class="bg-blue-200 border border-black rounded p-1 w-fit"
-  href="/auth/"
-  hx-boost="true"
->
-  Auth
-</a>
+<div hx-boost class="flex gap-2 flex-wrap">
+  {{ if not .LoggedIn }}
+  <a
+    class="bg-yellow-200 border border-black rounded p-1 w-fit"
+    href="/signup/"
+  >
+    Sign up
+  </a>
+  <a class="bg-red-200 border border-black rounded p-1 w-fit" href="/signin/">
+    Sign in
+  </a>
+  {{ else }}
+  <form method="post" action="/signout/">
+    <button
+      type="submit"
+      class="bg-red-200 border border-black rounded p-1 w-fit"
+    >
+      Sign out
+    </button>
+  </form>
+  {{ end }}
+</div>
 <form
   hx-post="/todos/"
   hx-target="#todos"
