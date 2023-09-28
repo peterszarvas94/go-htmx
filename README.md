@@ -17,4 +17,6 @@
 - [ ] orm?
 - [ ] production
 - [x] add jwt
-- [ ] rewrite login / signup with form (no boost)
+- [x] rewrite login / signup with form (no boost)
+- [ ] input sanitization and validation
+- [ ] clean up errors
