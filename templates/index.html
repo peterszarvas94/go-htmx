@@ -26,7 +26,7 @@
   hx-target="#todos"
   hx-swap="beforeend"
   class="flex gap-2 flex-wrap"
-  hx-on::after-swap="this.reset()"
+  hx-on::after-request="this.reset();"
 >
   <input
     name="text"

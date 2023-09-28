@@ -10,13 +10,22 @@
 - `make dev` - start dev server on port 3000
 - `make tw-watch` - generate tailwind styles for dev
 
+### Prerequisites
+
+To run make commands, you need to have:
+
+- gin
+- tailwindcss cli
+
 ## Todo
 
 - [x] db connection
 - [x] env
-- [ ] orm?
-- [ ] production
 - [x] add jwt
 - [x] rewrite login / signup with form (no boost)
+- [x] clean up errors
 - [ ] input sanitization and validation
-- [ ] clean up errors
+- [ ] orm?
+- [ ] schema migrator?
+- [ ] production make scripts
+- [ ] live hosting

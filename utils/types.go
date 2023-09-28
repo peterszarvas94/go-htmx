@@ -1,27 +1,33 @@
 package utils
 
-type Todo struct {
+type UserData struct {
+	Id       int
+	Username string
+	Email    string
+}
+
+type TodoData struct {
 	Id   int
 	Text string
 }
 
-type Data struct {
-	Todos []Todo
+type TodosData struct {
+	Todos    []TodoData
 	LoggedIn bool
 }
 
 type JWT struct {
-	Token string
+	Token   string
 	Expires int64
 }
 
-type Signin struct {
-	User string
+type SigninData struct {
+	User  string
 	Error string
 }
 
-type Signup struct {
+type SignupData struct {
 	Username string
-	Email string
-	Error string
+	Email    string
+	Error    string
 }

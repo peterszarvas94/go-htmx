@@ -1,64 +1,61 @@
 package utils
 
 import (
-	"fmt"
+	"errors"
 	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func NewToken() JWT {
+func NewToken(id int) (JWT, error) {
 	currentTime := time.Now().Unix()
 	expirationTime := currentTime + 3600
-	secret, found := os.LookupEnv("JWT_SECRET")
 
+	secret, found := os.LookupEnv("JWT_SECRET")
 	if !found {
-		fmt.Println("Error: JWT_SECRET environment variable not found")
-		os.Exit(1)
+		return JWT{}, errors.New("Error: JWT_SECRET environment variable not found")
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"iat": currentTime,
 		"exp": expirationTime,
-		"sub": "user",
+		"sub": id,
 	})
 
-	signed_token, err := token.SignedString([]byte(secret))
-	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(1)
+	signedToken, signErr := token.SignedString([]byte(secret))
+	if signErr != nil {
+		return JWT{}, signErr
 	}
 
 	return JWT{
-		Token:   signed_token,
+		Token:   signedToken,
 		Expires: expirationTime,
-	}
+	}, nil
 }
 
 func ValidateToken(token string) (jwt.MapClaims, error) {
 	secret, found := os.LookupEnv("JWT_SECRET")
-
 	if !found {
-		return nil, fmt.Errorf("Error: JWT_SECRET environment variable not found")
+		return nil, errors.New("Error: JWT_SECRET environment variable not found")
 	}
 
-	parsed_token, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
+	parsedToken, parseErr := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
 		_, ok := token.Method.(*jwt.SigningMethodHMAC)
 		if !ok {
-			return nil, fmt.Errorf("Error: Unexpected signing method")
+			return nil, errors.New("Error: Unexpected signing method")
 		}
 
 		return []byte(secret), nil
 	})
 
-	if err != nil {
-		return nil, err
+	if parseErr != nil {
+		return nil, parseErr
 	}
 
-	claims, ok := parsed_token.Claims.(jwt.MapClaims)
-	if !ok || !parsed_token.Valid {
-		return nil, fmt.Errorf("Error: Invalid JWT token")
+	claims, ok := parsedToken.Claims.(jwt.MapClaims)
+	if !ok || !parsedToken.Valid {
+		return nil, errors.New("Error: Invalid signature")
 	}
 
 	return claims, nil

@@ -9,159 +9,190 @@ import (
 	_ "github.com/libsql/libsql-client-go/libsql"
 )
 
-func db() *sql.DB {
-	url, url_found := os.LookupEnv("DB_URL")
-	if !url_found {
-		fmt.Println("Error:", url_found)
-		os.Exit(1)
+func db() (*sql.DB, error) {
+	url, urlFound := os.LookupEnv("DB_URL")
+	if !urlFound {
+		return nil, errors.New("DB_URL not found")
 	}
 
 	token, token_found := os.LookupEnv("DB_TOKEN")
 	if !token_found {
-		fmt.Println("Error:", token_found)
-		os.Exit(1)
+		return nil, errors.New("DB_TOKEN not found")
 	}
 
 	connectionStr := fmt.Sprintf("%s?authToken=%s", url, token)
 
-	db, db_err := sql.Open("libsql", connectionStr)
-	if db_err != nil {
-		fmt.Println("Error:", db_err)
-		os.Exit(1)
+	db, dbErr := sql.Open("libsql", connectionStr)
+	if dbErr != nil {
+		return nil, dbErr
 	}
 
-	return db
+	return db, nil
 }
 
-func GetTodos() []Todo {
-	db := db()
+func GetTodos() ([]TodoData, error) {
+	db, dbErr := db()
+	if dbErr != nil {
+		return nil, dbErr
+	}
 
-	rows, err := db.Query("SELECT * FROM todos")
-	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(1)
+	rows, queryErr := db.Query("SELECT * FROM todos")
+	if queryErr != nil {
+		return nil, queryErr
 	}
 	defer rows.Close()
 
-	todos := []Todo{}
+	todos := []TodoData{}
 	for rows.Next() {
 		var id int
 		var text string
-		err = rows.Scan(&id, &text)
-		if err != nil {
-			fmt.Println("Error:", err)
-			os.Exit(1)
+		scanErr := rows.Scan(&id, &text)
+		if scanErr != nil {
+			return nil, scanErr
 		}
 
-		todo := Todo{
+		todo := TodoData{
 			Id:   id,
 			Text: text,
 		}
 		todos = append(todos, todo)
 	}
 
-	return todos
+	return todos, nil
 }
 
-func AddTodo(new_text string) Todo {
-	db := db()
-
-	_, err := db.Exec("INSERT INTO todos (text) VALUES (?)", new_text)
-	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(1)
+func AddTodo(newText string) (TodoData, error) {
+	db, dbErr := db()
+	if dbErr != nil {
+		return TodoData{}, dbErr
 	}
 
-	query, err := db.Query("SELECT * FROM todos WHERE text = ?", new_text)
-	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(1)
+	_, mutationErr := db.Exec("INSERT INTO todos (text) VALUES (?)", newText)
+	if mutationErr != nil {
+		return TodoData{}, mutationErr
+	}
+
+	query, queryErr := db.Query("SELECT * FROM todos WHERE text = ?", newText)
+	if queryErr != nil {
+		return TodoData{}, queryErr
 	}
 
 	var id int
 	var text string
 
 	for query.Next() {
-		err = query.Scan(&id, &text)
-		if err != nil {
-			fmt.Println("Error:", err)
-			os.Exit(1)
+		scanErr := query.Scan(&id, &text)
+		if scanErr != nil {
+			return TodoData{}, scanErr
 		}
 	}
 
-	todo := Todo{
+	todo := TodoData{
 		Id:   id,
 		Text: text,
 	}
 
-	return todo
+	return todo, nil
 }
 
-func GetTodoById(id int) Todo {
-	db := db()
+func GetTodoById(id int) (TodoData, error) {
+	db, dbErr := db()
+	if dbErr != nil {
+		return TodoData{}, dbErr
+	}
 
-	query, err := db.Query("SELECT * FROM todos WHERE id = ?", id)
-	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(1)
+	query, queryErr := db.Query("SELECT * FROM todos WHERE id = ?", id)
+	if queryErr != nil {
+		return TodoData{}, queryErr
 	}
 
 	var text string
 
 	for query.Next() {
-		err = query.Scan(&id, &text)
-		if err != nil {
-			fmt.Println("Error:", err)
-			os.Exit(1)
+		scanErr := query.Scan(&id, &text)
+		if scanErr != nil {
+			return TodoData{}, scanErr
 		}
 	}
 
-	todo := Todo{
+	todo := TodoData{
 		Id:   id,
 		Text: text,
 	}
 
-	return todo
+	return todo, nil
 }
 
-func DeleteTodoById(id int) {
-	db := db()
-
-	_, err := db.Exec("DELETE FROM todos WHERE id = ?", id)
-	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(1)
-	}
-}
-
-func NewUser(username string, email string, password string) (bool, error) {
-	db := db()
-
-	hashedPassword, hashErr := HashPassword(password)
-	if hashErr != nil {
-		return false, hashErr
-	}
-
-	_, dbErr := db.Exec(
-		"INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-		username, email, hashedPassword,
-	)
+func DeleteTodoById(id int) error {
+	db, dbErr := db()
 	if dbErr != nil {
-		return false, dbErr
+		return dbErr
 	}
 
-	return true, nil
+	_, mutationErr := db.Exec("DELETE FROM todos WHERE id = ?", id)
+	if mutationErr != nil {
+		return mutationErr
+	}
+
+	return nil
 }
 
-func GetUserByUsernameOrEmail(usernameOrEmail string, password string) (bool, error) {
-	db := db()
+func AddUser(newUsername string, newEmail string, newPassword string) (UserData, error) {
+	db, dbErr := db()
+	if dbErr != nil {
+		return UserData{}, dbErr
+	}
+
+	hashedPassword, hashErr := HashPassword(newPassword)
+	if hashErr != nil {
+		return UserData{}, hashErr
+	}
+	_, mutationErr := db.Exec(
+		"INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
+		newUsername, newEmail, hashedPassword,
+	)
+	if mutationErr != nil {
+		return UserData{}, mutationErr
+	}
+
+	query, queryErr := db.Query("SELECT * FROM users WHERE username = ?", newUsername)
+	if queryErr != nil {
+		return UserData{}, queryErr
+	}
+
+	var id int
+	var username string
+	var email string
+	var password string
+
+	for query.Next() {
+		scanErr := query.Scan(&id, &username, &email, &password)
+		if scanErr != nil {
+			return UserData{}, scanErr
+		}
+	}
+
+	user := UserData{
+		Id:       id,
+		Username: username,
+		Email:    email,
+	}
+
+	return user, nil
+}
+
+func GetUserByUsernameOrEmail(usernameOrEmail string, password string) (UserData, error) {
+	db, dbErr := db()
+	if dbErr != nil {
+		return UserData{}, dbErr
+	}
 
 	query, queryErr := db.Query(
 		"SELECT id, username, email, password as hash FROM users WHERE username = ? OR email = ?",
 		usernameOrEmail, usernameOrEmail,
 	)
 	if queryErr != nil {
-		return false, queryErr
+		return UserData{}, queryErr
 	}
 
 	var id int
@@ -171,20 +202,26 @@ func GetUserByUsernameOrEmail(usernameOrEmail string, password string) (bool, er
 
 	for query.Next() {
 		scanErr := query.Scan(&id, &username, &email, &hash)
-		if scanErr!= nil {
-			return false, scanErr
+		if scanErr != nil {
+			return UserData{}, scanErr
 		}
 	}
 
-	notFoundErr := errors.New("User not found")
 	if id == 0 {
-		return false, notFoundErr
+		return UserData{}, errors.New("User not found")
 	}
 
-	match, matchErr := CheckPasswordHash(hash, password)
-
-	if match {
-		return true, nil
+	matchErr := CheckPasswordHash(hash, password)
+	if matchErr != nil {
+		return UserData{}, matchErr
 	}
-	return false, matchErr
+
+	user := UserData{
+		Id:       id,
+		Username: username,
+		Email:    email,
+	}
+
+	return user, nil
+
 }
