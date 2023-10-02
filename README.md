@@ -24,8 +24,9 @@ To run make commands, you need to have:
 - [x] add jwt
 - [x] rewrite login / signup with form (no boost)
 - [x] clean up errors
+- [ ] signed in/out UI diff
 - [ ] input sanitization and validation
-- [ ] orm?
 - [ ] schema migrator?
+- [ ] orm?
 - [ ] production make scripts
 - [ ] live hosting

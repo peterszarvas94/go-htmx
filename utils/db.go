@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strconv"
 
 	_ "github.com/libsql/libsql-client-go/libsql"
 )
@@ -181,7 +182,7 @@ func AddUser(newUsername string, newEmail string, newPassword string) (UserData,
 	return user, nil
 }
 
-func GetUserByUsernameOrEmail(usernameOrEmail string, password string) (UserData, error) {
+func LoginUser(usernameOrEmail string, password string) (UserData, error) {
 	db, dbErr := db()
 	if dbErr != nil {
 		return UserData{}, dbErr
@@ -224,4 +225,40 @@ func GetUserByUsernameOrEmail(usernameOrEmail string, password string) (UserData
 
 	return user, nil
 
+}
+
+func GetUserById(id string) (UserData, error) {
+	db, dbErr := db()
+	if dbErr != nil {
+		return UserData{}, dbErr
+	}
+
+	query, queryErr := db.Query("SELECT * FROM users WHERE id = ?", id)
+	if queryErr != nil {
+		return UserData{}, queryErr
+	}
+
+	var username string
+	var email string
+	var password string
+
+	for query.Next() {
+		scanErr := query.Scan(&id, &username, &email, &password)
+		if scanErr != nil {
+			return UserData{}, scanErr
+		}
+	}
+
+	idInt, idErr := strconv.Atoi(id)
+	if idErr != nil {
+		return UserData{}, idErr
+	}
+
+	user := UserData{
+		Id:       idInt,
+		Username: username,
+		Email:    email,
+	}
+
+	return user, nil
 }

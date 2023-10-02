@@ -13,7 +13,12 @@ type TodoData struct {
 
 type TodosData struct {
 	Todos    []TodoData
+}
+
+type IndexData struct {
 	LoggedIn bool
+  User		 UserData
+	Todos    []TodoData
 }
 
 type JWT struct {

@@ -1,5 +1,5 @@
 {{define "content"}}
-<div hx-boost class="flex gap-2 flex-wrap">
+<div hx-boost class="flex items-center gap-2 flex-wrap">
   {{ if not .LoggedIn }}
   <a
     class="bg-yellow-200 border border-black rounded p-1 w-fit"
@@ -19,6 +19,8 @@
       Sign out
     </button>
   </form>
+  <div>Logged in as</div>
+  <div class="font-bold">{{.User.Username}} ({{.User.Email}})</div>
   {{ end }}
 </div>
 <form

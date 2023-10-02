@@ -3,6 +3,7 @@ package utils
 import (
 	"errors"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -17,10 +18,12 @@ func NewToken(id int) (JWT, error) {
 		return JWT{}, errors.New("Error: JWT_SECRET environment variable not found")
 	}
 
+	idStr := strconv.Itoa(id)
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"iat": currentTime,
 		"exp": expirationTime,
-		"sub": id,
+		"sub": idStr,
 	})
 
 	signedToken, signErr := token.SignedString([]byte(secret))
