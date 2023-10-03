@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"go-htmx/utils"
 	"html/template"
 	"net/http"
@@ -12,45 +13,37 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cookies := r.Cookies()
-	var token string
-	for _, cookie := range cookies {
-		if cookie.Name == "jwt" {
-			token = cookie.Value
-		}
-	}
-
-	claims, jwtErr := utils.ValidateToken(token)
-	userId, subErr := claims.GetSubject()
-	user, dbErr := utils.GetUserById(userId)
-
-	loggedIn := jwtErr == nil && subErr == nil && dbErr == nil
+	session := utils.CheckSession(r)
 
 	baseHtml := "templates/base.html"
 	indexHtml := "templates/index.html"
 	todoHtml := "templates/todo.html"
 	todosHtml := "templates/todos.html"
+
 	tmpl, tmplErr := template.ParseFiles(baseHtml, indexHtml, todosHtml, todoHtml)
 	if tmplErr != nil {
-		http.Error(w, "Intenal server error", http.StatusInternalServerError)
+		fmt.Println("tmplErr", tmplErr)
+		http.Error(w, "Intenal server error at tmpl", http.StatusInternalServerError)
+		return
 	}
 
 	todos, todosErr := utils.GetTodos()
 	if todosErr != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		http.Error(w, "Internal server error at todos", http.StatusInternalServerError)
+		return
 	}
 
-	todosData := utils.IndexData{
-		User:     user,
+	indexData := utils.IndexData{
+		Session: session,
 		Todos:    todos,
-		LoggedIn: loggedIn,
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
-	resErr := tmpl.Execute(w, todosData)
+	resErr := tmpl.Execute(w, indexData)
 	if resErr != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		fmt.Println("resErr", resErr)
+		http.Error(w, "Internal server error at res", http.StatusInternalServerError)
 	}
 
 }

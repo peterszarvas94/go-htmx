@@ -16,6 +16,7 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 			path = append(path, element)
 		}
 	}
+
 	todoHtml := "templates/todo.html"
 	todosHtml := "templates/todos.html"
 
@@ -52,6 +53,12 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 
 	// add new todo
 	if len(path) == 1 && r.Method == "POST" {
+		session := utils.CheckSession(r)
+		if !session.LoggedIn {
+			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			return
+		}
+
 		formErr := r.ParseForm()
 		if formErr != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -100,6 +107,12 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 
 	// delete todo by id
 	if len(path) == 2 && r.Method == "DELETE" {
+		session := utils.CheckSession(r)
+		if !session.LoggedIn {
+			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			return
+		}
+
 		id, pathErr := strconv.Atoi(path[1])
 		if pathErr != nil {
 			http.Error(w, "Todo id should be a number", http.StatusBadRequest)

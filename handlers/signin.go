@@ -8,6 +8,12 @@ import (
 )
 
 func SigninHandler(w http.ResponseWriter, r *http.Request) {
+	session := utils.CheckSession(r)
+	if session.LoggedIn {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
 	baseHtml := "templates/base.html"
 	signinHtml := "templates/signin.html"
 	errorHtml := "templates/error.html"
@@ -65,6 +71,7 @@ func SigninHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
 
 		signinData := utils.SigninData{
+
 			User:  user,
 			Error: "Invalid username or password",
 		}

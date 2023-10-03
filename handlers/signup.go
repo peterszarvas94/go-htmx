@@ -8,6 +8,12 @@ import (
 )
 
 func SignupHandler(w http.ResponseWriter, r *http.Request) {
+	session := utils.CheckSession(r)
+	if session.LoggedIn {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
 	baseHtml := "templates/base.html"
 	signupHtml := "templates/signup.html"
 	errorHtml := "templates/error.html"

@@ -1,6 +1,6 @@
 {{define "content"}}
 <div class="flex items-center gap-2 flex-wrap">
-  {{ if not .LoggedIn }}
+  {{ if not .Session.LoggedIn }}
   <a
     class="bg-yellow-200 border border-black rounded p-1 w-fit cursor-pointer"
     href="/signup"
@@ -25,23 +25,28 @@
     </button>
   </form>
   <div>Logged in as</div>
-  <div class="font-bold">{{.User.Username}} ({{.User.Email}})</div>
+  <div class="font-bold">
+    {{.Session.User.Username}} ({{.Session.User.Email}})
+  </div>
   {{ end }}
 </div>
-<form
-  hx-post="/todos/"
-  hx-target="#todos"
-  hx-swap="beforeend"
-  hx-on::after-request="this.reset();"
-  class="flex gap-2 flex-wrap"
->
-  <input
-    name="text"
-    placeholder="new todo"
-    class="border border-black rounded-md p-1"
-  />
-  <button type="submit" class="bg-green-200 border border-black rounded p-1">
-    Submit
-  </button>
-</form>
+{{if .Session.LoggedIn}}
+  <form
+    hx-post="/todos/"
+    hx-target="#todos"
+    hx-swap="beforeend"
+    hx-on::after-request="this.reset();"
+    class="flex gap-2 flex-wrap"
+  >
+    <input
+      name="text"
+      placeholder="new todo"
+      class="border border-black rounded-md p-1"
+    />
+    <button type="submit" class="bg-green-200 border border-black rounded p-1">
+      Submit
+    </button>
+  </form>
+{{end}} 
+<h1 class="font-bold">Todos</h1>
 {{template "todos" .}} {{end}}

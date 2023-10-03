@@ -1,5 +1,10 @@
 package utils
 
+type JWT struct {
+	Token   string
+	Expires int64
+}
+
 type UserData struct {
 	Id       int
 	Username string
@@ -15,15 +20,14 @@ type TodosData struct {
 	Todos    []TodoData
 }
 
-type IndexData struct {
+type SessionData struct {
 	LoggedIn bool
-  User		 UserData
-	Todos    []TodoData
+	User     UserData
 }
 
-type JWT struct {
-	Token   string
-	Expires int64
+type IndexData struct {
+	Session SessionData
+	Todos    []TodoData
 }
 
 type SigninData struct {

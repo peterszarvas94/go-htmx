@@ -1,6 +1,9 @@
-{{template "todo" .}} {{define "todo"}}
+{{template "todomid" .}} {{define "todostart"}}
 <li class="flex gap-2 items-center">
   <div>{{.Text}}</div>
+  {{end}}
+
+  {{define "delete"}}
   <button hx-delete="/todos/{{.Id}}" hx-target="closest li">
     <svg
       stroke="currentColor"
@@ -16,5 +19,8 @@
       ></path>
     </svg>
   </button>
+  {{end}}
+
+  {{define "todoend"}}
 </li>
 {{end}}
