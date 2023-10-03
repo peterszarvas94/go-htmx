@@ -3,7 +3,16 @@
 <html lang="en">
   <head>
     <title>Go Web Server</title>
+    <!-- htmx -->
     <script src="https://unpkg.com/htmx.org@1.9.5"></script>
+    <!-- always swap -->
+    <script>
+      document.addEventListener("htmx:beforeOnLoad", function (evt) {
+        if (evt.detail.xhr.status > 0) {
+          evt.detail.shouldSwap = true;
+        }
+      });
+    </script>
     <link rel="stylesheet" type="text/css" href="../static/style.css" />
   </head>
 

@@ -1,17 +1,22 @@
 {{define "content"}}
-<div hx-boost class="flex items-center gap-2 flex-wrap">
+<div class="flex items-center gap-2 flex-wrap">
   {{ if not .LoggedIn }}
   <a
-    class="bg-yellow-200 border border-black rounded p-1 w-fit"
-    href="/signup/"
+    class="bg-yellow-200 border border-black rounded p-1 w-fit cursor-pointer"
+    href="/signup"
+    hx-boost="true"
   >
     Sign up
   </a>
-  <a class="bg-red-200 border border-black rounded p-1 w-fit" href="/signin/">
+  <a
+    hx-boost="true"
+    href="/signin"
+    class="bg-red-200 border border-black rounded p-1 w-fit"
+  >
     Sign in
   </a>
   {{ else }}
-  <form method="post" action="/signout/">
+  <form hx-boost="true" method="post" action="/signout/">
     <button
       type="submit"
       class="bg-red-200 border border-black rounded p-1 w-fit"
@@ -27,8 +32,8 @@
   hx-post="/todos/"
   hx-target="#todos"
   hx-swap="beforeend"
-  class="flex gap-2 flex-wrap"
   hx-on::after-request="this.reset();"
+  class="flex gap-2 flex-wrap"
 >
   <input
     name="text"

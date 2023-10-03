@@ -1,5 +1,9 @@
 {{define "content"}}
-<form method="post" class="flex flex-col gap-2 flex-wrap max-w-md">
+<form
+  hx-post="/signup/"
+  hx-target="body"
+  class="flex flex-col gap-2 flex-wrap max-w-md"
+>
   <input
     name="username"
     class="border border-black rounded p-1"

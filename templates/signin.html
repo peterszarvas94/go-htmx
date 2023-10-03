@@ -1,5 +1,10 @@
 {{define "content"}}
-<form method="post" class="flex flex-col gap-2 flex-wrap max-w-md">
+<form
+  hx-post="/signin/"
+  hx-target="body"
+  hx-replace-url="true"
+  class="flex flex-col gap-2 flex-wrap max-w-md"
+>
   <input
     name="user"
     class="border border-black rounded p-1"
