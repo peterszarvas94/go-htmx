@@ -1,13 +1,13 @@
 {{template "todos" .}} {{define "todos"}}
-<ul id="todos">
+<ul id="todos" class="flex flex-col">
   {{range .Todos}}
-    {{template "todostart" .}}
+  <li class="flex gap-2">
+    {{template "todo" .}}
     
     {{if $.Session.LoggedIn}}
       {{template "delete" .}}
     {{end}}
-
-    {{template "todoend" .}}
+  </li>
   {{end}}
 </ul>
 {{end}}

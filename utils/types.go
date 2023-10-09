@@ -16,6 +16,12 @@ type TodoData struct {
 	Text string
 }
 
+type NewTodoData struct {
+	Id	 int
+	Text string
+  Session SessionData
+}
+
 type TodosData struct {
 	Todos    []TodoData
 }

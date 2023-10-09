@@ -1,9 +1,18 @@
-{{template "todomid" .}} {{define "todostart"}}
-<li class="flex gap-2 items-center">
-  <div>{{.Text}}</div>
-  {{end}}
+{{template "new-todo" .}}
+{{define "new-todo"}}
+  <li class="flex gap-2">
+    {{template "todo" .}}
+    {{if .Session.LoggedIn}}
+      {{template "delete" .}}
+    {{end}}
+  </li>
+{{end}}
 
-  {{define "delete"}}
+{{define "todo"}}
+  <div>{{.Text}}</div>
+{{end}}
+
+{{define "delete"}}
   <button hx-delete="/todos/{{.Id}}" hx-target="closest li">
     <svg
       stroke="currentColor"
@@ -19,8 +28,4 @@
       ></path>
     </svg>
   </button>
-  {{end}}
-
-  {{define "todoend"}}
-</li>
 {{end}}

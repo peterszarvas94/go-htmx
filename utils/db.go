@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"net/http"
 	"os"
 	"strconv"
 
@@ -62,20 +63,20 @@ func GetTodos() ([]TodoData, error) {
 	return todos, nil
 }
 
-func AddTodo(newText string) (TodoData, error) {
+func AddTodo(newText string, r *http.Request) (NewTodoData, error) {
 	db, dbErr := db()
 	if dbErr != nil {
-		return TodoData{}, dbErr
+		return NewTodoData{}, dbErr
 	}
 
 	_, mutationErr := db.Exec("INSERT INTO todos (text) VALUES (?)", newText)
 	if mutationErr != nil {
-		return TodoData{}, mutationErr
+		return NewTodoData{}, mutationErr
 	}
 
 	query, queryErr := db.Query("SELECT * FROM todos WHERE text = ?", newText)
 	if queryErr != nil {
-		return TodoData{}, queryErr
+		return NewTodoData{}, queryErr
 	}
 
 	var id int
@@ -84,13 +85,16 @@ func AddTodo(newText string) (TodoData, error) {
 	for query.Next() {
 		scanErr := query.Scan(&id, &text)
 		if scanErr != nil {
-			return TodoData{}, scanErr
+			return NewTodoData{}, scanErr
 		}
 	}
+	
+	session := CheckSession(r)
 
-	todo := TodoData{
+	todo := NewTodoData{
 		Id:   id,
 		Text: text,
+		Session: session,
 	}
 
 	return todo, nil
