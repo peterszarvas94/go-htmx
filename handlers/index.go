@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"go-htmx/utils"
 	"html/template"
 	"net/http"
@@ -22,7 +21,6 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, tmplErr := template.ParseFiles(baseHtml, indexHtml, todosHtml, todoHtml)
 	if tmplErr != nil {
-		fmt.Println("tmplErr", tmplErr)
 		http.Error(w, "Intenal server error at tmpl", http.StatusInternalServerError)
 		return
 	}
@@ -42,7 +40,6 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	resErr := tmpl.Execute(w, indexData)
 	if resErr != nil {
-		fmt.Println("resErr", resErr)
 		http.Error(w, "Internal server error at res", http.StatusInternalServerError)
 	}
 

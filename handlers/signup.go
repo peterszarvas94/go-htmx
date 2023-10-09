@@ -5,7 +5,7 @@ import (
 	"html"
 	"html/template"
 	"net/http"
-	"strings"
+	"net/mail"
 )
 
 func SignupHandler(w http.ResponseWriter, r *http.Request) {
@@ -18,15 +18,19 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 	baseHtml := "templates/base.html"
 	signupHtml := "templates/signup.html"
 	errorHtml := "templates/error.html"
-	tmpl, tmplErr := template.ParseFiles(baseHtml, signupHtml, errorHtml)
-	if tmplErr != nil {
+	incorrectHtml := "templates/incorrect.html"
+	correctHtml := "templates/correct.html"
+
+	signupTmpl, signupTmplErr := template.ParseFiles(baseHtml, signupHtml, errorHtml, incorrectHtml, correctHtml)
+	if signupTmplErr != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 	}
 
+	// signup page
 	if r.Method == "GET" {
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
-		resErr := tmpl.Execute(w, nil)
+		resErr := signupTmpl.Execute(w, nil)
 		if resErr != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 		}
@@ -34,6 +38,7 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// signup new user
 	if r.Method == "POST" {
 		formErr := r.ParseForm()
 		if formErr != nil {
@@ -51,25 +56,60 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		errorMsg := "Internal server error"
+		errorMsg := ""
 
-		if strings.Contains(userErr.Error(), "UNIQUE constraint failed: users.email") {
-			errorMsg = "User with this email already exists"
+		_, invalid := mail.ParseAddress(email)
+		if invalid != nil {
+			errorMsg = "Invalid email"
 		}
 
-		if strings.Contains(userErr.Error(), "UNIQUE constraint failed: users.username") {
-			errorMsg = "Username is taken"
+		var usernameExists bool
+		_, usernameQueryErr := utils.GetUserByUsername(username)
+		if usernameQueryErr != nil {
+			usernameExists = false
+		} else {
+			usernameExists = true
+			if errorMsg == "" {
+				errorMsg = "Username"
+			}
+		}
+
+		var emailExists bool
+		_, emailQueryErr := utils.GetUserByEmail(email)
+		if emailQueryErr != nil {
+			emailExists = false
+		} else {
+			emailExists = true
+			if errorMsg == "" {
+				errorMsg = "Email"
+			}
+			if errorMsg == "Username" {
+				errorMsg += " and email"
+			}
+		}
+
+		if errorMsg != "Invalid email" {
+			errorMsg += " already exists"
+		}
+
+		if errorMsg == "" {
+			errorMsg = "Something went wrong"
 		}
 
 		signupData := utils.SignupData{
 			Username: username,
 			Email:    email,
 			Error:    errorMsg,
+			Exists: utils.ExistsData{
+				Username: usernameExists,
+				Email:    emailExists,
+			},
 		}
 
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.WriteHeader(http.StatusConflict)
-		res_err := tmpl.Execute(w, signupData)
+
+		res_err := signupTmpl.Execute(w, signupData)
 		if res_err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 		}

@@ -1,23 +1,15 @@
 package handlers
 
 import (
-	"fmt"
 	"go-htmx/utils"
 	"html"
 	"html/template"
 	"net/http"
 	"strconv"
-	"strings"
 )
 
 func TodosHandler(w http.ResponseWriter, r *http.Request) {
-	rawPath := strings.Split(r.URL.Path, "/")
-	var path []string
-	for _, element := range rawPath {
-		if element != "" {
-			path = append(path, element)
-		}
-	}
+	path := utils.GetPath(r)
 
 	todoHtml := "templates/todo.html"
 	todosHtml := "templates/todos.html"
@@ -79,7 +71,6 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 
 		resErr := todoTmpl.Execute(w, todoData)
 		if resErr != nil {
-			fmt.Println(resErr)
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 		}
 

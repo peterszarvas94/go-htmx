@@ -88,12 +88,12 @@ func AddTodo(newText string, r *http.Request) (NewTodoData, error) {
 			return NewTodoData{}, scanErr
 		}
 	}
-	
+
 	session := CheckSession(r)
 
 	todo := NewTodoData{
-		Id:   id,
-		Text: text,
+		Id:      id,
+		Text:    text,
 		Session: session,
 	}
 
@@ -175,6 +175,10 @@ func AddUser(newUsername string, newEmail string, newPassword string) (UserData,
 		if scanErr != nil {
 			return UserData{}, scanErr
 		}
+	}
+
+	if id == 0 {
+		return UserData{}, errors.New("User not found")
 	}
 
 	user := UserData{
@@ -260,6 +264,76 @@ func GetUserById(id string) (UserData, error) {
 
 	user := UserData{
 		Id:       idInt,
+		Username: username,
+		Email:    email,
+	}
+
+	return user, nil
+}
+
+func GetUserByUsername(username string) (UserData, error) {
+	db, dbErr := db()
+	if dbErr != nil {
+		return UserData{}, dbErr
+	}
+
+	query, queryErr := db.Query("SELECT * FROM users WHERE username = ?", username)
+	if queryErr != nil {
+		return UserData{}, queryErr
+	}
+
+	var id int
+	var email string
+	var password string
+
+	for query.Next() {
+		scanErr := query.Scan(&id, &username, &email, &password)
+		if scanErr != nil {
+			return UserData{}, scanErr
+		}
+	}
+
+	if id == 0 {
+		return UserData{}, errors.New("User not found")
+	}
+
+	user := UserData{
+		Id:       id,
+		Username: username,
+		Email:    email,
+	}
+
+	return user, nil
+}
+
+func GetUserByEmail(email string) (UserData, error) {
+	db, dbErr := db()
+	if dbErr != nil {
+		return UserData{}, dbErr
+	}
+
+	query, queryErr := db.Query("SELECT * FROM users WHERE email = ?", email)
+	if queryErr != nil {
+		return UserData{}, queryErr
+	}
+
+	var id int
+	var username string
+	var password string
+
+	for query.Next() {
+		scanErr := query.Scan(&id, &username, &email, &password)
+		if scanErr != nil {
+			return UserData{}, scanErr
+		}
+	}
+
+	if id == 0 {
+		return UserData{}, errors.New("User not found")
+	}
+
+	user := UserData{
+		Id:       id,
 		Username: username,
 		Email:    email,
 	}

@@ -17,13 +17,13 @@ type TodoData struct {
 }
 
 type NewTodoData struct {
-	Id	 int
-	Text string
-  Session SessionData
+	Id      int
+	Text    string
+	Session SessionData
 }
 
 type TodosData struct {
-	Todos    []TodoData
+	Todos []TodoData
 }
 
 type SessionData struct {
@@ -33,7 +33,7 @@ type SessionData struct {
 
 type IndexData struct {
 	Session SessionData
-	Todos    []TodoData
+	Todos   []TodoData
 }
 
 type SigninData struct {
@@ -45,4 +45,10 @@ type SignupData struct {
 	Username string
 	Email    string
 	Error    string
+	Exists   ExistsData
+}
+
+type ExistsData struct {
+	Username bool
+	Email    bool
 }
