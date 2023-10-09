@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"go-htmx/utils"
 	"html"
 	"html/template"
