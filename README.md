@@ -26,9 +26,5 @@ To run make commands, you need to have:
 - [x] clean up errors
 - [x] signed in/out UI diff
 - [x] only logged in can create todo
-- [ ] input sanitization and validation
-- [ ] schema migrator?
-- [ ] orm?
-- [ ] production make scripts
-- [ ] live hosting
-- [ ] handle path `/this` and `/this/` the same way
+- [x] input sanitization and validation
+- [ ] logger

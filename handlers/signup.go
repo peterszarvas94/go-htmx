@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"go-htmx/utils"
+	"html"
 	"html/template"
 	"net/http"
 	"strings"
@@ -40,9 +41,9 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		username := r.FormValue("username")
-		email := r.FormValue("email")
-		password := r.FormValue("password")
+		username := html.EscapeString(r.FormValue("username"))
+		email := html.EscapeString(r.FormValue("email"))
+		password := html.EscapeString(r.FormValue("password"))
 
 		_, userErr := utils.AddUser(username, email, password)
 		if userErr == nil {

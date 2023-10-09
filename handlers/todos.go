@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"go-htmx/utils"
+	"html"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -66,7 +67,8 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		text := r.FormValue("text")
+		text := html.EscapeString(r.FormValue("text"))
+
 		todoData, newTodoErr := utils.AddTodo(text, r)
 		if newTodoErr != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)

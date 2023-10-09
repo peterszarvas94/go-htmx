@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"fmt"
 	"go-htmx/utils"
+	"html"
 	"html/template"
 	"net/http"
 	"time"
@@ -40,8 +42,8 @@ func SigninHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		user := r.FormValue("user")
-		password := r.FormValue("password")
+		user := html.EscapeString(r.FormValue("user"))
+		password := html.EscapeString(r.FormValue("password"))
 
 		userData, userErr := utils.LoginUser(user, password)
 		if userErr == nil {
