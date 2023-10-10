@@ -1,9 +1,9 @@
-# GO + HTMX
+# HTTG
 
-- go webserwer
-- html templates
-- htmx for interactivity
-- tailwind css for styling
+- Htmx for interactivity
+- Turso db
+- Tailwind css for styling
+- Go webserwer with html templates
 
 ## Commands
 
