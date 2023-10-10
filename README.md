@@ -27,4 +27,7 @@ To run make commands, you need to have:
 - [x] signed in/out UI diff
 - [x] only logged in can create todo
 - [x] input sanitization and validation
-- [ ] logger
+- [x] logger
+    - [ ] implement on every func
+- [x] rework 404 handling
+    - [ ] implement on every GET

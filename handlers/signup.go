@@ -11,6 +11,7 @@ import (
 func SignupHandler(w http.ResponseWriter, r *http.Request) {
 	session := utils.CheckSession(r)
 	if session.LoggedIn {
+		utils.Log(utils.INFO, "signup/checkSession", "Already logged in, redirecting to index")
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
@@ -23,6 +24,7 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 
 	signupTmpl, signupTmplErr := template.ParseFiles(baseHtml, signupHtml, errorHtml, incorrectHtml, correctHtml)
 	if signupTmplErr != nil {
+		utils.Log(utils.ERROR, "signup/signupTmpl", signupTmplErr.Error())
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 	}
 
@@ -32,6 +34,7 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 
 		resErr := signupTmpl.Execute(w, nil)
 		if resErr != nil {
+			utils.Log(utils.ERROR, "signup/get/res", resErr.Error())
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 		}
 
@@ -42,6 +45,7 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		formErr := r.ParseForm()
 		if formErr != nil {
+			utils.Log(utils.ERROR, "signup/add/form", formErr.Error())
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
@@ -52,6 +56,7 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 
 		_, userErr := utils.AddUser(username, email, password)
 		if userErr == nil {
+			utils.Log(utils.INFO, "signup/add/user", "User added successfully")
 			http.Redirect(w, r, "/signin", http.StatusSeeOther)
 			return
 		}
@@ -60,6 +65,7 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 
 		_, invalid := mail.ParseAddress(email)
 		if invalid != nil {
+
 			errorMsg = "Invalid email"
 		}
 

@@ -11,111 +11,176 @@ import (
 func TodosHandler(w http.ResponseWriter, r *http.Request) {
 	path := utils.GetPath(r)
 
-	todoHtml := "templates/todo.html"
-	todosHtml := "templates/todos.html"
+	if len(path) == 1 {
 
-	todosTmpl, todosTmplErr := template.ParseFiles(todosHtml, todoHtml)
-	if todosTmplErr != nil {
+		// get all todos
+		if r.Method == "GET" {
+			todosHtml := "templates/todos.html"
+			todoHtml := "templates/todo.html"
+			deleteHtml := "templates/delete.html"
+
+			tmpl, tmplErr := template.ParseFiles(todosHtml, todoHtml, deleteHtml)
+			if tmplErr != nil {
+				utils.Log(utils.ERROR, "todos/get/tmpl", tmplErr.Error())
+				http.Error(w, "Internal server error", http.StatusInternalServerError)
+			}
+
+			utils.Log(utils.INFO, "todos/get/tmpl", "Template parsed successfully")
+
+			todos, getTodosErr := utils.GetTodos()
+			if getTodosErr != nil {
+				utils.Log(utils.ERROR, "todos/get/todos", getTodosErr.Error())
+				http.Error(w, "Internal server error", http.StatusInternalServerError)
+				return
+			}
+
+			utils.Log(utils.INFO, "todos/get/todos", "Todos retrieved successfully")
+
+			todosData := utils.TodosData{
+				Session: utils.SessionData{},
+				Todos:   todos,
+			}
+
+			w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+			resErr := tmpl.Execute(w, todosData)
+			if resErr != nil {
+				utils.Log(utils.ERROR, "todos/get/res", resErr.Error())
+				http.Error(w, "Internal server  error", http.StatusInternalServerError)
+			}
+
+			utils.Log(utils.INFO, "todos/get/res", "Template rendered successfully")
+			return
+		}
+
+		// add new todo
+		if r.Method == "POST" {
+			todoHtml := "templates/todo.html"
+			deleteHtml := "templates/delete.html"
+			newTodoHtml := "templates/new-todo.html"
+
+			tmpl, tmplErr := template.ParseFiles(newTodoHtml, todoHtml, deleteHtml)
+			if tmplErr != nil {
+				utils.Log(utils.ERROR, "todos/add/tmpl", tmplErr.Error())
+				http.Error(w, "Internal server error", http.StatusInternalServerError)
+			}
+			utils.Log(utils.INFO, "todos/add/tmpl", "Template parsed successfully")
+
+			session := utils.CheckSession(r)
+			if !session.LoggedIn {
+				utils.Log(utils.ERROR, "todos/add/checkSession", "Unauthorized")
+				http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			}
+
+			utils.Log(utils.INFO, "todos/add/checkSession", "Authorized")
+
+			formErr := r.ParseForm()
+			if formErr != nil {
+				utils.Log(utils.ERROR, "todos/add/parseForm", formErr.Error())
+				http.Error(w, "Internal server error", http.StatusInternalServerError)
+				return
+			}
+
+			utils.Log(utils.INFO, "todos/add/parseForm", "Form parsed successfully")
+
+			text := html.EscapeString(r.FormValue("text"))
+
+			newTodo, newTodoErr := utils.AddTodo(text, r)
+			if newTodoErr != nil {
+				utils.Log(utils.ERROR, "todos/add/newTodo", newTodoErr.Error())
+				http.Error(w, "Internal server error", http.StatusInternalServerError)
+				return
+			}
+
+			utils.Log(utils.INFO, "todos/add/newTodo", "Todo added successfully")
+
+			w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+			resErr := tmpl.Execute(w, newTodo)
+			if resErr != nil {
+				utils.Log(utils.ERROR, "todos/add/res", resErr.Error())
+				http.Error(w, "Internal server error", http.StatusInternalServerError)
+			}
+
+			utils.Log(utils.INFO, "todos/add/res", "Template rendered successfully")
+
+			return
+		}
+
+		utils.Log(utils.ERROR, "todos/path1", "Method not allowed")
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+
+	if len(path) == 2 {
+
+		// delete todo by id
+		if r.Method == "DELETE" {
+			session := utils.CheckSession(r)
+			if !session.LoggedIn {
+				utils.Log(utils.ERROR, "todos/delete/checkSession", "Unauthorized")
+				http.Error(w, "Unauthorized", http.StatusUnauthorized)
+				return
+			}
+
+			id, pathErr := strconv.Atoi(path[1])
+			if pathErr != nil {
+				utils.Log(utils.ERROR, "todos/delete/path", pathErr.Error())
+				http.Error(w, "Todo id should be a number", http.StatusBadRequest)
+				return
+			}
+
+			deleteErr := utils.DeleteTodoById(id)
+			if deleteErr != nil {
+				utils.Log(utils.ERROR, "todos/delete/deleteTodo", deleteErr.Error())
+			}
+
+			return
+		}
+
+		if r.Method == "GET" {
+			baseHtml := "templates/base.html"
+			notfoundHtml := "templates/404.html"
+
+			tmpl, tmplErr := template.ParseFiles(baseHtml, notfoundHtml)
+			if tmplErr != nil {
+				utils.Log(utils.ERROR, "todos/path2/notfound/tmpl", tmplErr.Error())
+				http.Error(w, "Internal server error", http.StatusInternalServerError)
+				return
+			}
+
+			resErr := tmpl.Execute(w, nil)
+			if resErr != nil {
+				utils.Log(utils.ERROR, "todos/path2/notfound/res", resErr.Error())
+				http.Error(w, "Internal server error", http.StatusInternalServerError)
+			}
+
+			utils.Log(utils.INFO, "todos/path2/notfound/res", "Template rendered successfully")
+			return
+		}
+
+		utils.Log(utils.ERROR, "todos/path2", "Method not allowed")
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	utils.Log(utils.WARNING, "todos/notfound/path", "Path not found")
+
+	baseHtml := "templates/base.html"
+	notfoundHtml := "templates/404.html"
+
+	tmpl, tmplErr := template.ParseFiles(baseHtml, notfoundHtml)
+	if tmplErr != nil {
+		utils.Log(utils.ERROR, "todos/notfound/tmpl", tmplErr.Error())
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	resErr := tmpl.Execute(w, nil)
+	if resErr != nil {
+		utils.Log(utils.ERROR, "index/notfound/res", resErr.Error())
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 	}
 
-	todoTmpl, todoTmplErr := template.ParseFiles(todoHtml)
-	if todoTmplErr != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-	}
-
-	// get all todos
-	if len(path) == 1 && r.Method == "GET" {
-		todos, getTodosErr := utils.GetTodos()
-		if getTodosErr != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
-			return
-		}
-
-		todosData := utils.TodosData{
-			Todos: todos,
-		}
-
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-
-		resErr := todosTmpl.Execute(w, todosData)
-		if resErr != nil {
-			http.Error(w, "Internal server  error", http.StatusInternalServerError)
-		}
-		return
-	}
-
-	// add new todo
-	if len(path) == 1 && r.Method == "POST" {
-		session := utils.CheckSession(r)
-		if !session.LoggedIn {
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
-			return
-		}
-
-		formErr := r.ParseForm()
-		if formErr != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
-			return
-		}
-
-		text := html.EscapeString(r.FormValue("text"))
-
-		todoData, newTodoErr := utils.AddTodo(text, r)
-		if newTodoErr != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
-			return
-		}
-
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-
-		resErr := todoTmpl.Execute(w, todoData)
-		if resErr != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
-		}
-
-		return
-	}
-
-	// get todo by id
-	if len(path) == 2 && r.Method == "GET" {
-		id, pathErr := strconv.Atoi(path[1])
-		if pathErr != nil {
-			http.Error(w, "Todo id should be a number", http.StatusBadRequest)
-			return
-		}
-
-		todoData, getTodoErr := utils.GetTodoById(id)
-		if getTodoErr != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
-			return
-		}
-
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-
-		resErr := todoTmpl.Execute(w, todoData)
-		if resErr != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
-		}
-		return
-	}
-
-	// delete todo by id
-	if len(path) == 2 && r.Method == "DELETE" {
-		session := utils.CheckSession(r)
-		if !session.LoggedIn {
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
-			return
-		}
-
-		id, pathErr := strconv.Atoi(path[1])
-		if pathErr != nil {
-			http.Error(w, "Todo id should be a number", http.StatusBadRequest)
-			return
-		}
-
-		utils.DeleteTodoById(id)
-
-		return
-	}
+	utils.Log(utils.INFO, "index/notfound/res", "Template parsed successfully")
+	return
 }

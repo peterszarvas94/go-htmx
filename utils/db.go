@@ -103,11 +103,13 @@ func AddTodo(newText string, r *http.Request) (NewTodoData, error) {
 func GetTodoById(id int) (TodoData, error) {
 	db, dbErr := db()
 	if dbErr != nil {
+		Log(ERROR, "getTodobyId/db", dbErr.Error())
 		return TodoData{}, dbErr
 	}
 
 	query, queryErr := db.Query("SELECT * FROM todos WHERE id = ?", id)
 	if queryErr != nil {
+		Log(ERROR, "getTodobyId/query", queryErr.Error())
 		return TodoData{}, queryErr
 	}
 
@@ -116,6 +118,7 @@ func GetTodoById(id int) (TodoData, error) {
 	for query.Next() {
 		scanErr := query.Scan(&id, &text)
 		if scanErr != nil {
+			Log(ERROR, "getTodobyId/scan", scanErr.Error())
 			return TodoData{}, scanErr
 		}
 	}

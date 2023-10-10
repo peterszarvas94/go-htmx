@@ -1,0 +1,72 @@
+ERROR todos/getAll/res 2023-10-10 20:40:47 - template: todos.html:5:11: executing "todos" at <.Session>: can't evaluate field Session in type utils.TodosData
+ERROR todos/getAll/res 2023-10-10 20:44:11 - template: todos.html:6:29: executing "todos" at <.Session.LoggedIn>: can't evaluate field Session in type utils.SessionData
+ERROR index/res 2023-10-10 20:44:14 - template: todos.html:6:29: executing "todos" at <.Session.LoggedIn>: can't evaluate field Session in type utils.SessionData
+ERROR index/res 2023-10-10 20:45:55 - template: todo.html:2:9: executing "todo" at <.Text>: can't evaluate field Text in type utils.SessionData
+ERROR index/res 2023-10-10 20:46:56 - template: todo.html:2:9: executing "todo" at <.Text>: can't evaluate field Text in type utils.SessionData
+ERROR index/res 2023-10-10 20:48:12 - template: todo.html:2:9: executing "todo" at <.Text>: can't evaluate field Text in type utils.SessionData
+ERROR index/res 2023-10-10 20:49:00 - template: todo.html:2:9: executing "todo" at <.Text>: can't evaluate field Text in type utils.SessionData
+ERROR index/res 2023-10-10 20:51:28 - template: todo.html:2:9: executing "todo" at <.Text>: can't evaluate field Text in type utils.SessionData
+ERROR index/res 2023-10-10 20:53:40 - template: todo.html:2:9: executing "todo" at <.Text>: can't evaluate field Text in type utils.SessionData
+ERROR index/res 2023-10-10 20:53:42 - template: todo.html:2:9: executing "todo" at <.Text>: can't evaluate field Text in type utils.SessionData
+ERROR index/res 2023-10-10 20:53:44 - template: todo.html:2:9: executing "todo" at <.Text>: can't evaluate field Text in type utils.SessionData
+ERROR index/res 2023-10-10 20:56:13 - template: todos.html:7:16: executing "todos" at <.Todos>: can't evaluate field Todos in type utils.SessionData
+ERROR index/res 2023-10-10 20:56:17 - template: todos.html:7:16: executing "todos" at <.Todos>: can't evaluate field Todos in type utils.SessionData
+ERROR todos/todosTmpl 2023-10-10 20:58:41 - template: todo.html:1: unexpected ".todo" in template clause
+ERROR todos/todoTmpl 2023-10-10 20:58:41 - template: todo.html:1: unexpected ".todo" in template clause
+ERROR todos/todosTmpl 2023-10-10 20:58:41 - template: todo.html:1: unexpected ".todo" in template clause
+ERROR todos/todoTmpl 2023-10-10 20:58:41 - template: todo.html:1: unexpected ".todo" in template clause
+ERROR todos/todosTmpl 2023-10-10 20:58:44 - template: todo.html:1: unexpected ".todo" in template clause
+ERROR todos/todoTmpl 2023-10-10 20:58:44 - template: todo.html:1: unexpected ".todo" in template clause
+ERROR todos/add/res 2023-10-10 21:13:09 - html/template:new-todo.html:7:17: no such template "delete"
+ERROR todos/add/res 2023-10-10 21:13:21 - html/template:new-todo.html:7:17: no such template "delete"
+ERROR index/res 2023-10-10 21:15:23 - html/template:todos.html:10:23: no such template "delete"
+ERROR todos/getAll/res 2023-10-10 21:16:27 - html/template:todos.html:10:23: no such template "delete"
+ERROR todos/add/res 2023-10-10 21:16:54 - html/template:new-todo.html:5:15: no such template "todo"
+ERROR todos/add/res 2023-10-10 21:18:03 - html/template:new-todo.html:5:15: no such template "todo"
+ERROR todos/add/res 2023-10-10 21:18:43 - html/template:new-todo.html:5:15: no such template "todo"
+ERROR todos 2023-10-10 21:19:49 - Invalid path
+ERROR todos 2023-10-10 21:21:22 - Invalid path
+WARNING index/path 2023-10-10 21:35:06 - Path not found
+WARNING index/path 2023-10-10 21:35:52 - Path not found
+WARNING index/path 2023-10-10 21:36:06 - Path not found
+WARNING index/path 2023-10-10 21:36:06 - Path not found
+WARNING index/path 2023-10-10 21:36:10 - Path not found
+WARNING index/path 2023-10-10 21:36:10 - Path not found
+WARNING index/path 2023-10-10 21:36:26 - Path not found
+WARNING index/path 2023-10-10 21:36:26 - Path not found
+WARNING index/path 2023-10-10 21:36:28 - Path not found
+WARNING index/path 2023-10-10 21:36:28 - Path not found
+WARNING index/path 2023-10-10 21:38:22 - Path not found
+WARNING index/path 2023-10-10 21:38:22 - Path not found
+WARNING index/path 2023-10-10 21:38:34 - Path not found
+WARNING index/path 2023-10-10 21:38:34 - Path not found
+WARNING index/path 2023-10-10 21:38:36 - Path not found
+WARNING index/path 2023-10-10 21:38:36 - Path not found
+WARNING index/path 2023-10-10 21:38:43 - Path not found
+WARNING index/path 2023-10-10 21:38:43 - Path not found
+WARNING index/path 2023-10-10 21:38:46 - Path not found
+WARNING index/path 2023-10-10 21:38:49 - Path not found
+WARNING index/path 2023-10-10 21:38:53 - Path not found
+WARNING index/path 2023-10-10 21:38:53 - Path not found
+WARNING index/path 2023-10-10 21:39:05 - Path not found
+WARNING index/path 2023-10-10 21:39:05 - Path not found
+WARNING index/path 2023-10-10 21:39:05 - Path not found
+WARNING index/path 2023-10-10 21:39:05 - Path not found
+WARNING index/path 2023-10-10 21:39:06 - Path not found
+WARNING index/path 2023-10-10 21:39:06 - Path not found
+WARNING index/path 2023-10-10 21:39:07 - Path not found
+WARNING index/path 2023-10-10 21:39:07 - Path not found
+WARNING index/path 2023-10-10 21:39:08 - Path not found
+WARNING index/path 2023-10-10 21:39:08 - Path not found
+WARNING index/path 2023-10-10 21:39:40 - Path not found
+WARNING index/path 2023-10-10 21:39:40 - Path not found
+WARNING index/path 2023-10-10 21:40:21 - Path not found
+WARNING index/path 2023-10-10 21:40:55 - Path not found
+WARNING index/path 2023-10-10 21:41:03 - Path not found
+WARNING index/path 2023-10-10 21:41:08 - Path not found
+WARNING index/path 2023-10-10 21:41:12 - Path not found
+ERROR todos/path2 2023-10-10 21:49:43 - Method not allowed
+WARNING todos/notfound/path 2023-10-10 21:49:43 - Path not found
+ERROR todos/path2 2023-10-10 21:50:15 - Method not allowed
+ERROR todos/path2 2023-10-10 21:52:44 - Method not allowed
+WARNING todos/notfound/path 2023-10-10 21:52:54 - Path not found

@@ -1,60 +1,69 @@
 {{define "content"}}
-<div class="flex items-center gap-2 flex-wrap">
-  {{ if not .Session.LoggedIn }}
-  <a
-    aria-label="Sign up"
-    class="bg-yellow-200 border border-black rounded p-1 w-fit cursor-pointer"
-    href="/signup"
-    hx-boost="true"
-  >
-    Sign up
-  </a>
-  <a
-    aria-label="Sign in"
-    hx-boost="true"
-    href="/signin"
-    class="bg-red-200 border border-black rounded p-1 w-fit"
-  >
-    Sign in
-  </a>
-  {{ else }}
-  <form hx-boost="true" method="post" action="/signout/">
-    <button
-      aria-label="Sign out"
-      type="submit"
-      class="bg-red-200 border border-black rounded p-1 w-fit"
+
+  {{if not .Session.LoggedIn}}
+
+    <div class="flex items-center gap-2 flex-wrap">
+      <a
+        aria-label="Sign up"
+        class="bg-yellow-200 border border-black rounded p-1 w-fit cursor-pointer"
+        href="/signup"
+        hx-boost="true"
+      >
+        Sign up
+      </a>
+      <a
+        aria-label="Sign in"
+        hx-boost="true"
+        href="/signin"
+        class="bg-red-200 border border-black rounded p-1 w-fit"
+      >
+        Sign in
+      </a>
+    </div>
+
+  {{else}}
+
+    <div class="flex items-center gap-2 flex-wrap">
+      <form hx-boost="true" method="post" action="/signout/">
+        <button
+          aria-label="Sign out"
+          type="submit"
+          class="bg-red-200 border border-black rounded p-1 w-fit"
+        >
+          Sign out
+        </button>
+      </form>
+      <div>Logged in as</div>
+      <div class="font-bold">
+        {{.Session.User.Username}} ({{.Session.User.Email}})
+      </div>
+    </div>
+    <form
+      hx-post="/todos/"
+      hx-target="#todos"
+      hx-swap="beforeend"
+      hx-on::after-request="this.reset();"
+      class="flex gap-2 flex-wrap"
     >
-      Sign out
-    </button>
-  </form>
-  <div>Logged in as</div>
-  <div class="font-bold">
-    {{.Session.User.Username}} ({{.Session.User.Email}})
-  </div>
-  {{ end }}
-</div>
-{{if .Session.LoggedIn}}
-<form
-  hx-post="/todos/"
-  hx-target="#todos"
-  hx-swap="beforeend"
-  hx-on::after-request="this.reset();"
-  class="flex gap-2 flex-wrap"
->
-  <input
-    aria-label="New todo"
-    name="text"
-    placeholder="new todo"
-    class="border border-black rounded-md p-1"
-  />
-  <button
-    aria-label="Submit"
-    type="submit"
-    class="bg-green-200 border border-black rounded p-1"
-  >
-    Submit
-  </button>
-</form>
+      <input
+        aria-label="New todo"
+        name="text"
+        placeholder="new todo"
+        class="border border-black rounded-md p-1"
+      />
+      <button
+        aria-label="Submit"
+        type="submit"
+        class="bg-green-200 border border-black rounded p-1"
+      >
+        Submit
+      </button>
+    </form>
+
+  {{end}}
+
+  <h1 class="font-bold">Todos</h1>
+
+  {{template "todos" .}}
+
 {{end}}
-<h1 class="font-bold">Todos</h1>
-{{template "todos" .}} {{end}}

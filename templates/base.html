@@ -1,23 +1,24 @@
 {{template "base" .}} {{define "base"}}
-<!doctype html>
-<html lang="en">
-  <head>
-    <title>Go Web Server</title>
-    <!-- htmx -->
-    <script src="https://unpkg.com/htmx.org@1.9.5"></script>
-    <!-- always swap -->
-    <script>
-      document.addEventListener("htmx:beforeOnLoad", function (evt) {
-        if (evt.detail.xhr.status == 401 || 409) {
-          evt.detail.shouldSwap = true;
-        }
-      });
-    </script>
-    <link rel="stylesheet" type="text/css" href="../static/style.css" />
-  </head>
+  <!doctype html>
+  <html lang="en">
+    <head>
+      <title>Go Web Server</title>
+      <script src="https://unpkg.com/htmx.org@1.9.5"></script>
+      <script>
+        document.addEventListener("htmx:beforeOnLoad", function (evt) {
+          if (evt.detail.xhr.status == 401 || 409) {
+            evt.detail.shouldSwap = true;
+          }
+          if (evt.detail.xhr.status == 500) {
+            evt.detail.shouldSwap = false;
+          }
+        });
+      </script>
+      <link rel="stylesheet" type="text/css" href="/static/style.css" />
+    </head>
 
-  <body class="flex flex-col p-2 gap-2">
-    {{template "content" .}}
-  </body>
-</html>
+    <body class="flex flex-col p-2 gap-2">
+      {{template "content" .}}
+    </body>
+  </html>
 {{end}}
