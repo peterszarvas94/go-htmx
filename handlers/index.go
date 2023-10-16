@@ -10,16 +10,20 @@ import (
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	// if method is not GET, 405
 	if r.Method != "GET" {
-		utils.Log(utils.ERROR, "index/method", "Method not allowed")
+		message := fmt.Sprintf("Method %s not allowed", r.Method)
+
+		utils.Log(utils.ERROR, "index/method", message)
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
+	utils.Log(utils.INFO, "index/path", r.URL.Path)
 	path := utils.GetPath(r)
 
 	// if path is not empty, 404
 	if len(path) > 0 {
-		utils.Log(utils.WARNING, "index/notfound/path", "Path not found")
+		message := fmt.Sprintf("Path %s not found", r.URL.Path)
+		utils.Log(utils.WARNING, "index/notfound/path", message)
 		
 		baseHtml := "templates/base.html"
 		notfoundHtml := "templates/404.html"

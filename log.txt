@@ -1,16 +1,3 @@
-ERROR todos/getAll/res 2023-10-10 20:40:47 - template: todos.html:5:11: executing "todos" at <.Session>: can't evaluate field Session in type utils.TodosData
-ERROR todos/getAll/res 2023-10-10 20:44:11 - template: todos.html:6:29: executing "todos" at <.Session.LoggedIn>: can't evaluate field Session in type utils.SessionData
-ERROR index/res 2023-10-10 20:44:14 - template: todos.html:6:29: executing "todos" at <.Session.LoggedIn>: can't evaluate field Session in type utils.SessionData
-ERROR index/res 2023-10-10 20:45:55 - template: todo.html:2:9: executing "todo" at <.Text>: can't evaluate field Text in type utils.SessionData
-ERROR index/res 2023-10-10 20:46:56 - template: todo.html:2:9: executing "todo" at <.Text>: can't evaluate field Text in type utils.SessionData
-ERROR index/res 2023-10-10 20:48:12 - template: todo.html:2:9: executing "todo" at <.Text>: can't evaluate field Text in type utils.SessionData
-ERROR index/res 2023-10-10 20:49:00 - template: todo.html:2:9: executing "todo" at <.Text>: can't evaluate field Text in type utils.SessionData
-ERROR index/res 2023-10-10 20:51:28 - template: todo.html:2:9: executing "todo" at <.Text>: can't evaluate field Text in type utils.SessionData
-ERROR index/res 2023-10-10 20:53:40 - template: todo.html:2:9: executing "todo" at <.Text>: can't evaluate field Text in type utils.SessionData
-ERROR index/res 2023-10-10 20:53:42 - template: todo.html:2:9: executing "todo" at <.Text>: can't evaluate field Text in type utils.SessionData
-ERROR index/res 2023-10-10 20:53:44 - template: todo.html:2:9: executing "todo" at <.Text>: can't evaluate field Text in type utils.SessionData
-ERROR index/res 2023-10-10 20:56:13 - template: todos.html:7:16: executing "todos" at <.Todos>: can't evaluate field Todos in type utils.SessionData
-ERROR index/res 2023-10-10 20:56:17 - template: todos.html:7:16: executing "todos" at <.Todos>: can't evaluate field Todos in type utils.SessionData
 ERROR todos/todosTmpl 2023-10-10 20:58:41 - template: todo.html:1: unexpected ".todo" in template clause
 ERROR todos/todoTmpl 2023-10-10 20:58:41 - template: todo.html:1: unexpected ".todo" in template clause
 ERROR todos/todosTmpl 2023-10-10 20:58:41 - template: todo.html:1: unexpected ".todo" in template clause
@@ -70,3 +57,336 @@ WARNING todos/notfound/path 2023-10-10 21:49:43 - Path not found
 ERROR todos/path2 2023-10-10 21:50:15 - Method not allowed
 ERROR todos/path2 2023-10-10 21:52:44 - Method not allowed
 WARNING todos/notfound/path 2023-10-10 21:52:54 - Path not found
+INFO index/checkSession 2023-10-16 19:23:25 - No session
+INFO index/tmpl 2023-10-16 19:23:25 - Template parsed successfully
+INFO index/todos 2023-10-16 19:23:25 - Todos retrieved successfully
+INFO index/res 2023-10-16 19:23:25 - Template rendered successfully
+INFO index/checkSession 2023-10-16 19:29:24 - Session found: 14
+INFO index/tmpl 2023-10-16 19:29:24 - Template parsed successfully
+INFO index/todos 2023-10-16 19:29:24 - Todos retrieved successfully
+INFO index/res 2023-10-16 19:29:24 - Template rendered successfully
+INFO index/checkSession 2023-10-16 19:29:26 - No session
+INFO index/tmpl 2023-10-16 19:29:26 - Template parsed successfully
+INFO index/todos 2023-10-16 19:29:26 - Todos retrieved successfully
+INFO index/res 2023-10-16 19:29:26 - Template rendered successfully
+INFO check/session 2023-10-16 19:29:29 - User is not logged in
+INFO check/method 2023-10-16 19:29:29 - Method allowed
+INFO check/correct 2023-10-16 19:29:29 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:29:29 - Template parsed successfully
+INFO check/parse 2023-10-16 19:29:29 - Form parsed successfully
+WARNING check/username 2023-10-16 19:29:30 - User exists
+INFO check/session 2023-10-16 19:29:33 - User is not logged in
+INFO check/method 2023-10-16 19:29:33 - Method allowed
+INFO check/correct 2023-10-16 19:29:33 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:29:33 - Template parsed successfully
+INFO check/parse 2023-10-16 19:29:33 - Form parsed successfully
+INFO check/email 2023-10-16 19:29:34 - User does not exist
+WARNING check/email 2023-10-16 19:29:34 - User already exists
+INFO check/session 2023-10-16 19:29:36 - User is not logged in
+INFO check/method 2023-10-16 19:29:36 - Method allowed
+INFO check/correct 2023-10-16 19:29:36 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:29:36 - Template parsed successfully
+INFO check/parse 2023-10-16 19:29:36 - Form parsed successfully
+WARNING check/email 2023-10-16 19:29:36 - User already exists
+INFO check/session 2023-10-16 19:29:38 - User is not logged in
+INFO check/method 2023-10-16 19:29:38 - Method allowed
+INFO check/correct 2023-10-16 19:29:38 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:29:38 - Template parsed successfully
+INFO check/parse 2023-10-16 19:29:38 - Form parsed successfully
+WARNING check/email 2023-10-16 19:29:38 - User already exists
+INFO check/session 2023-10-16 19:29:41 - User is not logged in
+INFO check/method 2023-10-16 19:29:41 - Method allowed
+INFO check/correct 2023-10-16 19:29:41 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:29:41 - Template parsed successfully
+INFO check/parse 2023-10-16 19:29:41 - Form parsed successfully
+WARNING check/email 2023-10-16 19:29:41 - User already exists
+INFO check/session 2023-10-16 19:29:42 - User is not logged in
+INFO check/method 2023-10-16 19:29:42 - Method allowed
+INFO check/correct 2023-10-16 19:29:42 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:29:42 - Template parsed successfully
+INFO check/parse 2023-10-16 19:29:42 - Form parsed successfully
+INFO check/email 2023-10-16 19:29:42 - User does not exist
+WARNING check/email 2023-10-16 19:29:42 - User already exists
+INFO check/session 2023-10-16 19:30:06 - User is not logged in
+INFO check/method 2023-10-16 19:30:06 - Method allowed
+INFO check/correct 2023-10-16 19:30:06 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:30:06 - Template parsed successfully
+INFO check/parse 2023-10-16 19:30:06 - Form parsed successfully
+INFO check/email 2023-10-16 19:30:06 - User does not exist
+WARNING check/email 2023-10-16 19:30:06 - User already exists
+INFO check/session 2023-10-16 19:30:08 - User is not logged in
+INFO check/method 2023-10-16 19:30:08 - Method allowed
+INFO check/correct 2023-10-16 19:30:08 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:30:08 - Template parsed successfully
+INFO check/parse 2023-10-16 19:30:08 - Form parsed successfully
+INFO check/email 2023-10-16 19:30:09 - User does not exist
+WARNING check/email 2023-10-16 19:30:09 - User already exists
+INFO check/session 2023-10-16 19:30:45 - User is not logged in
+INFO check/method 2023-10-16 19:30:45 - Method allowed
+INFO check/correct 2023-10-16 19:30:45 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:30:45 - Template parsed successfully
+INFO check/parse 2023-10-16 19:30:45 - Form parsed successfully
+WARNING check/email 2023-10-16 19:30:45 - User already exists
+INFO check/session 2023-10-16 19:30:47 - User is not logged in
+INFO check/method 2023-10-16 19:30:47 - Method allowed
+INFO check/correct 2023-10-16 19:30:47 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:30:47 - Template parsed successfully
+INFO check/parse 2023-10-16 19:30:47 - Form parsed successfully
+WARNING check/email 2023-10-16 19:30:47 - User already exists
+INFO check/session 2023-10-16 19:30:48 - User is not logged in
+INFO check/method 2023-10-16 19:30:48 - Method allowed
+INFO check/correct 2023-10-16 19:30:48 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:30:48 - Template parsed successfully
+INFO check/parse 2023-10-16 19:30:48 - Form parsed successfully
+INFO check/email 2023-10-16 19:30:48 - User does not exist
+WARNING check/email 2023-10-16 19:30:48 - User already exists
+INFO check/session 2023-10-16 19:30:48 - User is not logged in
+INFO check/method 2023-10-16 19:30:48 - Method allowed
+INFO check/correct 2023-10-16 19:30:48 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:30:48 - Template parsed successfully
+INFO check/parse 2023-10-16 19:30:48 - Form parsed successfully
+INFO check/email 2023-10-16 19:30:48 - User does not exist
+WARNING check/email 2023-10-16 19:30:48 - User already exists
+INFO check/session 2023-10-16 19:30:50 - User is not logged in
+INFO check/method 2023-10-16 19:30:50 - Method allowed
+INFO check/correct 2023-10-16 19:30:50 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:30:50 - Template parsed successfully
+INFO check/parse 2023-10-16 19:30:50 - Form parsed successfully
+WARNING check/email 2023-10-16 19:30:50 - User already exists
+INFO check/session 2023-10-16 19:30:51 - User is not logged in
+INFO check/method 2023-10-16 19:30:51 - Method allowed
+INFO check/correct 2023-10-16 19:30:51 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:30:51 - Template parsed successfully
+INFO check/parse 2023-10-16 19:30:51 - Form parsed successfully
+INFO check/email 2023-10-16 19:30:51 - User does not exist
+WARNING check/email 2023-10-16 19:30:51 - User already exists
+INFO check/session 2023-10-16 19:31:49 - User is not logged in
+INFO check/method 2023-10-16 19:31:49 - Method allowed
+INFO check/correct 2023-10-16 19:31:49 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:31:49 - Template parsed successfully
+INFO check/parse 2023-10-16 19:31:49 - Form parsed successfully
+WARNING check/username 2023-10-16 19:31:49 - User exists
+INFO check/session 2023-10-16 19:31:51 - User is not logged in
+INFO check/method 2023-10-16 19:31:51 - Method allowed
+INFO check/correct 2023-10-16 19:31:51 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:31:51 - Template parsed successfully
+INFO check/parse 2023-10-16 19:31:51 - Form parsed successfully
+WARNING check/username 2023-10-16 19:31:51 - User exists
+INFO check/session 2023-10-16 19:31:53 - User is not logged in
+INFO check/method 2023-10-16 19:31:53 - Method allowed
+INFO check/correct 2023-10-16 19:31:53 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:31:53 - Template parsed successfully
+INFO check/parse 2023-10-16 19:31:53 - Form parsed successfully
+INFO check/usename 2023-10-16 19:31:54 - User does not exist
+WARNING check/username 2023-10-16 19:31:54 - User exists
+INFO check/session 2023-10-16 19:31:58 - User is not logged in
+INFO check/method 2023-10-16 19:31:58 - Method allowed
+INFO check/correct 2023-10-16 19:31:58 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:31:58 - Template parsed successfully
+INFO check/parse 2023-10-16 19:31:58 - Form parsed successfully
+INFO check/email 2023-10-16 19:31:58 - User does not exist
+WARNING check/email 2023-10-16 19:31:58 - User already exists
+INFO check/session 2023-10-16 19:33:10 - User is not logged in
+INFO check/method 2023-10-16 19:33:10 - Method allowed
+INFO check/correct 2023-10-16 19:33:10 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:33:10 - Template parsed successfully
+INFO check/parse 2023-10-16 19:33:10 - Form parsed successfully
+INFO check/usename 2023-10-16 19:33:10 - User does not exist
+WARNING check/username 2023-10-16 19:33:10 - User exists
+INFO check/session 2023-10-16 19:33:17 - User is not logged in
+INFO check/method 2023-10-16 19:33:17 - Method allowed
+INFO check/correct 2023-10-16 19:33:17 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:33:17 - Template parsed successfully
+INFO check/parse 2023-10-16 19:33:17 - Form parsed successfully
+INFO check/session 2023-10-16 19:34:13 - User is not logged in
+INFO check/method 2023-10-16 19:34:13 - Method allowed
+INFO check/correct 2023-10-16 19:34:13 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:34:13 - Template parsed successfully
+INFO check/parse 2023-10-16 19:34:13 - Form parsed successfully
+INFO check/usename 2023-10-16 19:34:13 - User does not exist
+INFO check/session 2023-10-16 19:34:15 - User is not logged in
+INFO check/method 2023-10-16 19:34:15 - Method allowed
+INFO check/correct 2023-10-16 19:34:15 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:34:15 - Template parsed successfully
+INFO check/parse 2023-10-16 19:34:15 - Form parsed successfully
+WARNING check/username 2023-10-16 19:34:15 - User exists
+INFO check/session 2023-10-16 19:34:17 - User is not logged in
+INFO check/method 2023-10-16 19:34:17 - Method allowed
+INFO check/correct 2023-10-16 19:34:17 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:34:17 - Template parsed successfully
+INFO check/parse 2023-10-16 19:34:17 - Form parsed successfully
+INFO check/usename 2023-10-16 19:34:17 - User does not exist
+INFO check/session 2023-10-16 19:34:19 - User is not logged in
+INFO check/method 2023-10-16 19:34:19 - Method allowed
+INFO check/correct 2023-10-16 19:34:19 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:34:19 - Template parsed successfully
+INFO check/parse 2023-10-16 19:34:19 - Form parsed successfully
+WARNING check/username 2023-10-16 19:34:19 - User exists
+INFO check/session 2023-10-16 19:34:22 - User is not logged in
+INFO check/method 2023-10-16 19:34:22 - Method allowed
+INFO check/correct 2023-10-16 19:34:22 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:34:22 - Template parsed successfully
+INFO check/parse 2023-10-16 19:34:22 - Form parsed successfully
+INFO check/email 2023-10-16 19:34:22 - User does not exist
+INFO check/session 2023-10-16 19:34:23 - User is not logged in
+INFO check/method 2023-10-16 19:34:23 - Method allowed
+INFO check/correct 2023-10-16 19:34:23 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:34:23 - Template parsed successfully
+INFO check/parse 2023-10-16 19:34:23 - Form parsed successfully
+WARNING check/email 2023-10-16 19:34:23 - User already exists
+INFO check/session 2023-10-16 19:34:25 - User is not logged in
+INFO check/method 2023-10-16 19:34:25 - Method allowed
+INFO check/correct 2023-10-16 19:34:25 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:34:25 - Template parsed successfully
+INFO check/parse 2023-10-16 19:34:25 - Form parsed successfully
+INFO check/email 2023-10-16 19:34:25 - User does not exist
+INFO check/session 2023-10-16 19:34:26 - User is not logged in
+INFO check/method 2023-10-16 19:34:26 - Method allowed
+INFO check/correct 2023-10-16 19:34:26 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:34:26 - Template parsed successfully
+INFO check/parse 2023-10-16 19:34:26 - Form parsed successfully
+WARNING check/email 2023-10-16 19:34:27 - User already exists
+INFO index/checkSession 2023-10-16 19:37:56 - Session found: 14
+INFO index/tmpl 2023-10-16 19:37:56 - Template parsed successfully
+INFO index/todos 2023-10-16 19:37:56 - Todos retrieved successfully
+INFO index/res 2023-10-16 19:37:56 - Template rendered successfully
+INFO index/checkSession 2023-10-16 19:38:00 - Session found: 14
+INFO index/tmpl 2023-10-16 19:38:00 - Template parsed successfully
+INFO index/todos 2023-10-16 19:38:00 - Todos retrieved successfully
+INFO index/res 2023-10-16 19:38:00 - Template rendered successfully
+INFO signup/checkSession 2023-10-16 19:38:05 - Already logged in, redirecting to index
+INFO index/checkSession 2023-10-16 19:38:05 - Session found: 14
+INFO index/tmpl 2023-10-16 19:38:05 - Template parsed successfully
+INFO index/todos 2023-10-16 19:38:05 - Todos retrieved successfully
+INFO index/res 2023-10-16 19:38:05 - Template rendered successfully
+INFO index/checkSession 2023-10-16 19:38:06 - No session
+INFO index/tmpl 2023-10-16 19:38:06 - Template parsed successfully
+INFO index/todos 2023-10-16 19:38:06 - Todos retrieved successfully
+INFO index/res 2023-10-16 19:38:06 - Template rendered successfully
+INFO index/path 2023-10-16 19:44:47 - /asdasd
+WARNING index/notfound/path 2023-10-16 19:44:47 - Path [asdasd] not found
+INFO index/notfound/res 2023-10-16 19:44:47 - Template parsed successfully
+INFO index/path 2023-10-16 19:45:04 - /asdasd/asd/asd/asd
+WARNING index/notfound/path 2023-10-16 19:45:04 - Path [asdasd asd asd asd] not found
+INFO index/notfound/res 2023-10-16 19:45:04 - Template parsed successfully
+INFO index/path 2023-10-16 19:46:51 - /
+INFO index/checkSession 2023-10-16 19:46:52 - No session
+INFO index/tmpl 2023-10-16 19:46:52 - Template parsed successfully
+INFO index/todos 2023-10-16 19:46:52 - Todos retrieved successfully
+INFO index/res 2023-10-16 19:46:52 - Template rendered successfully
+INFO signup/checkSession 2023-10-16 19:56:34 - Not logged in
+INFO signup/signupTmpl 2023-10-16 19:56:34 - Template parsed successfully
+INFO signup/method 2023-10-16 19:56:34 - Method is GET
+INFO signup/get/res 2023-10-16 19:56:34 - Template rendered successfully
+INFO check/session 2023-10-16 19:56:35 - User is not logged in
+INFO check/method 2023-10-16 19:56:35 - Method allowed
+INFO check/correct 2023-10-16 19:56:35 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:56:35 - Template parsed successfully
+INFO check/parse 2023-10-16 19:56:35 - Form parsed successfully
+INFO check/usename 2023-10-16 19:56:36 - User not found
+INFO check/session 2023-10-16 19:56:36 - User is not logged in
+INFO check/method 2023-10-16 19:56:36 - Method allowed
+INFO check/correct 2023-10-16 19:56:36 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:56:36 - Template parsed successfully
+INFO check/parse 2023-10-16 19:56:36 - Form parsed successfully
+INFO check/email 2023-10-16 19:56:36 - User not found
+INFO check/session 2023-10-16 19:56:37 - User is not logged in
+INFO check/method 2023-10-16 19:56:37 - Method allowed
+INFO check/correct 2023-10-16 19:56:37 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:56:37 - Template parsed successfully
+INFO check/parse 2023-10-16 19:56:37 - Form parsed successfully
+WARNING check/email 2023-10-16 19:56:37 - User already exists
+INFO signup/checkSession 2023-10-16 19:56:38 - Not logged in
+INFO signup/signupTmpl 2023-10-16 19:56:38 - Template parsed successfully
+INFO signup/method 2023-10-16 19:56:38 - Method is POST
+INFO signup/add/form 2023-10-16 19:56:38 - Form parsed successfully
+ERROR signup/add/user 2023-10-16 19:56:38 - failed to execute SQL: INSERT INTO users (username, email, password) VALUES (?, ?, ?)
+SQLite error: UNIQUE constraint failed: users.email
+INFO check/session 2023-10-16 19:56:43 - User is not logged in
+INFO check/method 2023-10-16 19:56:43 - Method allowed
+INFO check/correct 2023-10-16 19:56:43 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:56:43 - Template parsed successfully
+INFO check/parse 2023-10-16 19:56:43 - Form parsed successfully
+INFO check/email 2023-10-16 19:56:43 - User not found
+INFO check/session 2023-10-16 19:56:44 - User is not logged in
+INFO check/method 2023-10-16 19:56:44 - Method allowed
+INFO check/correct 2023-10-16 19:56:44 - Template parsed successfully
+INFO check/incorrect 2023-10-16 19:56:44 - Template parsed successfully
+INFO check/parse 2023-10-16 19:56:44 - Form parsed successfully
+INFO check/email 2023-10-16 19:56:44 - User not found
+INFO check/session 2023-10-16 20:02:49 - User is not logged in
+INFO check/method 2023-10-16 20:02:49 - Method allowed
+INFO check/correct 2023-10-16 20:02:49 - Template parsed successfully
+INFO check/incorrect 2023-10-16 20:02:49 - Template parsed successfully
+INFO check/parse 2023-10-16 20:02:49 - Form parsed successfully
+INFO check/email 2023-10-16 20:02:49 - User not found
+INFO check/session 2023-10-16 20:02:50 - User is not logged in
+INFO check/method 2023-10-16 20:02:50 - Method allowed
+INFO check/correct 2023-10-16 20:02:50 - Template parsed successfully
+INFO check/incorrect 2023-10-16 20:02:50 - Template parsed successfully
+INFO check/parse 2023-10-16 20:02:50 - Form parsed successfully
+INFO check/email 2023-10-16 20:02:50 - User not found
+INFO check/session 2023-10-16 20:02:52 - User is not logged in
+INFO check/method 2023-10-16 20:02:52 - Method allowed
+INFO check/correct 2023-10-16 20:02:52 - Template parsed successfully
+INFO check/incorrect 2023-10-16 20:02:52 - Template parsed successfully
+INFO check/parse 2023-10-16 20:02:52 - Form parsed successfully
+INFO check/email 2023-10-16 20:02:52 - User not found
+INFO check/session 2023-10-16 20:02:53 - User is not logged in
+INFO check/method 2023-10-16 20:02:53 - Method allowed
+INFO check/correct 2023-10-16 20:02:53 - Template parsed successfully
+INFO check/incorrect 2023-10-16 20:02:53 - Template parsed successfully
+INFO check/parse 2023-10-16 20:02:53 - Form parsed successfully
+INFO check/email 2023-10-16 20:02:53 - User not found
+INFO check/session 2023-10-16 20:03:28 - User is not logged in
+INFO check/method 2023-10-16 20:03:28 - Method allowed
+INFO check/correct 2023-10-16 20:03:28 - Template parsed successfully
+INFO check/incorrect 2023-10-16 20:03:28 - Template parsed successfully
+INFO check/parse 2023-10-16 20:03:28 - Form parsed successfully
+INFO check/email 2023-10-16 20:03:28 - User not found
+INFO check/session 2023-10-16 20:03:29 - User is not logged in
+INFO check/method 2023-10-16 20:03:29 - Method allowed
+INFO check/correct 2023-10-16 20:03:29 - Template parsed successfully
+INFO check/incorrect 2023-10-16 20:03:29 - Template parsed successfully
+INFO check/parse 2023-10-16 20:03:29 - Form parsed successfully
+INFO check/email 2023-10-16 20:03:29 - User not found
+INFO signup/checkSession 2023-10-16 20:03:31 - Not logged in
+INFO signup/signupTmpl 2023-10-16 20:03:31 - Template parsed successfully
+INFO signup/method 2023-10-16 20:03:31 - Method is GET
+INFO signup/get/res 2023-10-16 20:03:31 - Template rendered successfully
+INFO check/session 2023-10-16 20:03:33 - User is not logged in
+INFO check/method 2023-10-16 20:03:33 - Method allowed
+INFO check/correct 2023-10-16 20:03:33 - Template parsed successfully
+INFO check/incorrect 2023-10-16 20:03:33 - Template parsed successfully
+INFO check/parse 2023-10-16 20:03:33 - Form parsed successfully
+INFO check/email 2023-10-16 20:03:33 - User not found
+INFO check/session 2023-10-16 20:03:46 - User is not logged in
+INFO check/method 2023-10-16 20:03:46 - Method allowed
+INFO check/correct 2023-10-16 20:03:46 - Template parsed successfully
+INFO check/incorrect 2023-10-16 20:03:46 - Template parsed successfully
+INFO check/parse 2023-10-16 20:03:46 - Form parsed successfully
+WARNING check/email 2023-10-16 20:03:46 - User already exists
+INFO check/session 2023-10-16 20:03:47 - User is not logged in
+INFO check/method 2023-10-16 20:03:47 - Method allowed
+INFO check/correct 2023-10-16 20:03:47 - Template parsed successfully
+INFO check/incorrect 2023-10-16 20:03:47 - Template parsed successfully
+INFO check/parse 2023-10-16 20:03:47 - Form parsed successfully
+WARNING check/email 2023-10-16 20:03:47 - User already exists
+INFO check/session 2023-10-16 20:03:49 - User is not logged in
+INFO check/method 2023-10-16 20:03:49 - Method allowed
+INFO check/correct 2023-10-16 20:03:49 - Template parsed successfully
+INFO check/incorrect 2023-10-16 20:03:49 - Template parsed successfully
+INFO check/parse 2023-10-16 20:03:49 - Form parsed successfully
+INFO check/email 2023-10-16 20:03:49 - User not found
+INFO check/session 2023-10-16 20:03:51 - User is not logged in
+INFO check/method 2023-10-16 20:03:51 - Method allowed
+INFO check/correct 2023-10-16 20:03:51 - Template parsed successfully
+INFO check/incorrect 2023-10-16 20:03:51 - Template parsed successfully
+INFO check/parse 2023-10-16 20:03:51 - Form parsed successfully
+INFO check/email 2023-10-16 20:03:51 - User not found
+INFO check/session 2023-10-16 20:03:54 - User is not logged in
+INFO check/method 2023-10-16 20:03:54 - Method allowed
+INFO check/correct 2023-10-16 20:03:54 - Template parsed successfully
+INFO check/incorrect 2023-10-16 20:03:54 - Template parsed successfully
+INFO check/parse 2023-10-16 20:03:54 - Form parsed successfully
+WARNING check/email 2023-10-16 20:03:54 - User already exists

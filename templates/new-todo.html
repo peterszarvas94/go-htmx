@@ -2,9 +2,9 @@
 
 {{define "new-todo"}}
   <li class="flex gap-2">
-    {{template "todo" .}}
-    {{if and .Session.LoggedIn}}
+    {{if .Session.LoggedIn}}
       {{template "delete" .}}
     {{end}}
+    {{template "todo" .}}
   </li>
 {{end}}

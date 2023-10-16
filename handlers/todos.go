@@ -9,12 +9,14 @@ import (
 )
 
 func TodosHandler(w http.ResponseWriter, r *http.Request) {
+	utils.Log(utils.INFO, "todos/path", r.URL.Path)
 	path := utils.GetPath(r)
 
 	if len(path) == 1 {
-
 		// get all todos
 		if r.Method == "GET" {
+			utils.Log(utils.INFO, "todos/get/method", "Method is GET")
+
 			todosHtml := "templates/todos.html"
 			todoHtml := "templates/todo.html"
 			deleteHtml := "templates/delete.html"
@@ -55,6 +57,8 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 
 		// add new todo
 		if r.Method == "POST" {
+			utils.Log(utils.INFO, "todos/add/method", "Method is POST")
+
 			todoHtml := "templates/todo.html"
 			deleteHtml := "templates/delete.html"
 			newTodoHtml := "templates/new-todo.html"
@@ -109,18 +113,23 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 
 		utils.Log(utils.ERROR, "todos/path1", "Method not allowed")
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
 	}
 
 	if len(path) == 2 {
 
 		// delete todo by id
 		if r.Method == "DELETE" {
+			utils.Log(utils.INFO, "todos/delete/method", "Method is DELETE")
+
 			session := utils.CheckSession(r)
 			if !session.LoggedIn {
 				utils.Log(utils.ERROR, "todos/delete/checkSession", "Unauthorized")
 				http.Error(w, "Unauthorized", http.StatusUnauthorized)
 				return
 			}
+
+			utils.Log(utils.INFO, "todos/delete/checkSession", "Authorized")
 
 			id, pathErr := strconv.Atoi(path[1])
 			if pathErr != nil {
@@ -129,11 +138,14 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
+			utils.Log(utils.INFO, "todos/delete/path", "Path parsed successfully")
+
 			deleteErr := utils.DeleteTodoById(id)
 			if deleteErr != nil {
 				utils.Log(utils.ERROR, "todos/delete/deleteTodo", deleteErr.Error())
 			}
 
+			utils.Log(utils.INFO, "todos/delete/deleteTodo", "Todo deleted successfully")
 			return
 		}
 
@@ -175,12 +187,14 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	utils.Log(utils.INFO, "todos/notfound/tmpl", "Template parsed successfully")
+
 	resErr := tmpl.Execute(w, nil)
 	if resErr != nil {
 		utils.Log(utils.ERROR, "index/notfound/res", resErr.Error())
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 	}
 
-	utils.Log(utils.INFO, "index/notfound/res", "Template parsed successfully")
+	utils.Log(utils.INFO, "index/notfound/res", "Template rendered successfully")
 	return
 }
