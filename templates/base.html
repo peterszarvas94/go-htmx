@@ -1,24 +1,82 @@
 {{template "base" .}} {{define "base"}}
-  <!doctype html>
-  <html lang="en">
-    <head>
-      <title>Go Web Server</title>
-      <script src="https://unpkg.com/htmx.org@1.9.5"></script>
-      <script>
-        document.addEventListener("htmx:beforeOnLoad", function (evt) {
-          if (evt.detail.xhr.status == 401 || 409) {
-            evt.detail.shouldSwap = true;
-          }
-          if (evt.detail.xhr.status == 500) {
-            evt.detail.shouldSwap = false;
-          }
-        });
-      </script>
-      <link rel="stylesheet" type="text/css" href="/static/style.css" />
-    </head>
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Go Web Server</title>
+    <script src="https://unpkg.com/htmx.org@1.9.5"></script>
+    <script>
+      document.addEventListener("htmx:beforeOnLoad", function (evt) {
+        if (evt.detail.xhr.status == 401 || 409) {
+          evt.detail.shouldSwap = true;
+        }
+        if (evt.detail.xhr.status == 500) {
+          evt.detail.shouldSwap = false;
+        }
+      });
 
-    <body class="flex flex-col p-2 gap-2">
-      {{template "content" .}}
-    </body>
-  </html>
+      /**
+       * Template extension
+       *
+       * Usage:
+       * hx-get="/some/fake/url"
+       * hx-ext="template"
+       * hx-template="#template-id"
+       * hx-template-text="variable-name" (optional, variable come from url params)
+       * hx-template-run="js-code" (optional, js code to run before template is rendered)
+       */
+      htmx.defineExtension("template", {
+        transformResponse: function (text, xhr, elt) {
+          // get template
+          const query = elt.getAttribute("hx-template");
+          const template = document.querySelector(query);
+          const content = template.content;
+
+          // set values for window
+          const url = new URL(xhr.responseURL);
+          const params = url.searchParams;
+          for (const [key, value] of params) {
+            // try to parse to number
+            const num = Number(value);
+            if (!isNaN(num)) {
+              window[key] = num;
+              continue;
+            }
+            window[key] = value;
+          }
+
+          // set text for elements inside template
+          const textElts = content.querySelectorAll("[hx-template-text]");
+          textElts.forEach((textElt) => {
+            const name = textElt.getAttribute("hx-template-text");
+            const value = eval(name);
+            textElt.innerText = value;
+          });
+
+          // check if run attribute exists
+          const run = elt.getAttribute("hx-template-run");
+          if (run) {
+            eval(run);
+          }
+
+          // set values for imputs inside template
+          const inputs = content.querySelectorAll("input");
+          inputs.forEach((input) => {
+            const name = input.getAttribute("name");
+            const value = window[name];
+            input.setAttribute("value", value);
+          });
+
+          const serializer = new XMLSerializer();
+          const str = serializer.serializeToString(content);
+          return str;
+        },
+      });
+    </script>
+    <link rel="stylesheet" type="text/css" href="/static/style.css" />
+  </head>
+
+  <body class="flex flex-col p-2 gap-2">
+    {{template "content" .}}
+  </body>
+</html>
 {{end}}

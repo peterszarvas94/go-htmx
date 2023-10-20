@@ -538,6 +538,10 @@ video {
   display: flex;
 }
 
+.hidden {
+  display: none;
+}
+
 .w-7 {
   width: 1.75rem;
 }
@@ -624,6 +628,21 @@ video {
   padding: 0.5rem;
 }
 
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -641,4 +660,12 @@ video {
 .text-red-700 {
   --tw-text-opacity: 1;
   color: rgb(185 28 28 / var(--tw-text-opacity));
+}
+
+.underline {
+  text-decoration-line: underline;
+}
+
+.no-underline {
+  text-decoration-line: none;
 }

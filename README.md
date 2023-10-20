@@ -31,3 +31,10 @@ To run make commands, you need to have:
     - [ ] implement on every func
 - [x] rework 404 handling
     - [ ] implement on every GET
+- [ ] better route handling
+- [ ] client side templating
+    - [x] render <template> elements
+    - [x] create and use variables
+    - [x] allow to run js code
+    - [ ] find a way to intersect network requests
+    - [ ] what else?

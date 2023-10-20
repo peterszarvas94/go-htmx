@@ -1,69 +1,135 @@
-{{define "content"}}
+{{define "content"}} {{if not .Session.LoggedIn}}
 
-  {{if not .Session.LoggedIn}}
+<div class="flex items-center gap-2 flex-wrap">
+  <a
+    aria-label="Sign up"
+    class="bg-yellow-200 border border-black rounded p-1 w-fit cursor-pointer"
+    href="/signup"
+    hx-boost="true"
+  >
+    Sign up
+  </a>
+  <a
+    aria-label="Sign in"
+    hx-boost="true"
+    href="/signin"
+    class="bg-red-200 border border-black rounded p-1 w-fit"
+  >
+    Sign in
+  </a>
+</div>
 
-    <div class="flex items-center gap-2 flex-wrap">
-      <a
-        aria-label="Sign up"
-        class="bg-yellow-200 border border-black rounded p-1 w-fit cursor-pointer"
-        href="/signup"
-        hx-boost="true"
-      >
-        Sign up
-      </a>
-      <a
-        aria-label="Sign in"
-        hx-boost="true"
-        href="/signin"
-        class="bg-red-200 border border-black rounded p-1 w-fit"
-      >
-        Sign in
-      </a>
-    </div>
+{{else}}
 
-  {{else}}
-
-    <div class="flex items-center gap-2 flex-wrap">
-      <form hx-boost="true" method="post" action="/signout/">
-        <button
-          aria-label="Sign out"
-          type="submit"
-          class="bg-red-200 border border-black rounded p-1 w-fit"
-        >
-          Sign out
-        </button>
-      </form>
-      <div>Logged in as</div>
-      <div class="font-bold">
-        {{.Session.User.Username}} ({{.Session.User.Email}})
-      </div>
-    </div>
-    <form
-      hx-post="/todos/"
-      hx-target="#todos"
-      hx-swap="beforeend"
-      hx-on::after-request="this.reset();"
-      class="flex gap-2 flex-wrap"
+<div class="flex items-center gap-2 flex-wrap">
+  <form hx-boost="true" method="post" action="/signout/">
+    <button
+      aria-label="Sign out"
+      type="submit"
+      class="bg-red-200 border border-black rounded p-1 w-fit"
     >
-      <input
-        aria-label="New todo"
-        name="text"
-        placeholder="new todo"
-        class="border border-black rounded-md p-1"
-      />
-      <button
-        aria-label="Submit"
-        type="submit"
-        class="bg-green-200 border border-black rounded p-1"
-      >
-        Submit
-      </button>
-    </form>
+      Sign out
+    </button>
+  </form>
+  <div>Logged in as</div>
+  <div class="font-bold">
+    {{.Session.User.Username}} ({{.Session.User.Email}})
+  </div>
+</div>
+<form
+  hx-post="/todos/"
+  hx-target="#todos"
+  hx-swap="beforeend"
+  hx-on::after-request="this.reset();"
+  class="flex gap-2 flex-wrap"
+>
+  <input
+    aria-label="New todo"
+    name="text"
+    placeholder="new todo"
+    class="border border-black rounded-md p-1"
+  />
+  <button
+    aria-label="Submit"
+    type="submit"
+    class="bg-green-200 border border-black rounded p-1"
+  >
+    Submit
+  </button>
+</form>
 
-  {{end}}
+{{end}}
 
-  <h1 class="font-bold">Todos</h1>
+<h1 class="font-bold text-xl">Todos</h1>
 
-  {{template "todos" .}}
+{{template "todos" .}}
+
+<h1 class="font-bold text-xl">Client side templates</h1>
+
+<!-- dropdown -->
+<ul
+  hx-get="/"
+  hx-swap="outerHTML"
+  hx-ext="template"
+  hx-template="#dropdown-open"
+  class="underline cursor-pointer"
+>
+  open me!
+</ul>
+
+<template id="dropdown-open">
+  <ul
+    hx-get="/"
+    hx-swap="outerHTML"
+    hx-ext="template"
+    hx-template="#dropdown-closed"
+  >
+    <li class="underline cursor-pointer">close me!</li>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+  </ul>
+</template>
+
+<template id="dropdown-closed">
+  <ul
+    hx-get="/"
+    hx-swap="outerHTML"
+    hx-ext="template"
+    hx-template="#dropdown-open"
+    class="underline cursor-pointer"
+  >
+    open me!
+  </ul>
+</template>
+
+<!-- counter -->
+<form
+  hx-get="/"
+  hx-ext="template"
+  hx-trigger="click"
+  hx-swap="outerHTML"
+  hx-template="#number"
+  hx-template-run="count++;"
+>
+  <input type="hidden" name="count" value="1" />
+  <div class="underline cursor-pointer">Add</div>
+  <div>0</div>
+</form>
+
+<template id="number">
+  <form
+    hx-get="/"
+    hx-ext="template"
+    hx-trigger="click"
+    hx-swap="outerHTML"
+    hx-template="#number"
+    hx-template-run="count++"
+  >
+    <input type="hidden" name="count" value="" />
+    <div class="underline cursor-pointer">Add</div>
+    <div hx-template-text="count"></div>
+  </form>
+</template>
 
 {{end}}
