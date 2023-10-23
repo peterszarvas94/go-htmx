@@ -64,72 +64,21 @@
 
 {{template "todos" .}}
 
-<h1 class="font-bold text-xl">Client side templates</h1>
+<h1 class="font-bold text-xl">Custom elements</h1>
 
-<!-- dropdown -->
-<ul
-  hx-get="/"
-  hx-swap="outerHTML"
-  hx-ext="template"
-  hx-template="#dropdown-open"
-  class="underline cursor-pointer"
->
-  open me!
-</ul>
+<!-- custom element -->
 
-<template id="dropdown-open">
-  <ul
-    hx-get="/"
-    hx-swap="outerHTML"
-    hx-ext="template"
-    hx-template="#dropdown-closed"
-  >
-    <li class="underline cursor-pointer">close me!</li>
-    <li>1</li>
-    <li>2</li>
-    <li>3</li>
-  </ul>
-</template>
+<h2 class="font-bold pb-1">Counter</h2>
+<ce-counter start="2"></ce-counter>
 
-<template id="dropdown-closed">
-  <ul
-    hx-get="/"
-    hx-swap="outerHTML"
-    hx-ext="template"
-    hx-template="#dropdown-open"
-    class="underline cursor-pointer"
-  >
-    open me!
-  </ul>
-</template>
+<h2 class="font-bold pt-2">Dropdown</h2>
+<ce-dropdown></ce-dropdown>
 
-<!-- counter -->
-<form
-  hx-get="/"
-  hx-ext="template"
-  hx-trigger="click"
-  hx-swap="outerHTML"
-  hx-template="#number"
-  hx-template-run="count++;"
->
-  <input type="hidden" name="count" value="1" />
-  <div class="underline cursor-pointer">Add</div>
-  <div>0</div>
-</form>
+<h2 class="font-bold pt-2">Event dispatcher and receiver</h2>
+<ce-updater></ce-updater>
+<ce-receiver></ce-receiver>
 
-<template id="number">
-  <form
-    hx-get="/"
-    hx-ext="template"
-    hx-trigger="click"
-    hx-swap="outerHTML"
-    hx-template="#number"
-    hx-template-run="count++"
-  >
-    <input type="hidden" name="count" value="" />
-    <div class="underline cursor-pointer">Add</div>
-    <div hx-template-text="count"></div>
-  </form>
-</template>
+<h2 class="font-bold pt-2">Typeahead</h2>
+<ce-typeahead items="apple,banana,melon,strawberry,cherry"></ce-typeahead>
 
 {{end}}

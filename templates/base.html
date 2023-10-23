@@ -4,6 +4,11 @@
   <head>
     <title>Go Web Server</title>
     <script src="https://unpkg.com/htmx.org@1.9.5"></script>
+    <script src="static/counter.js"></script>
+    <script src="static/dropdown.js"></script>
+    <script src="static/updater.js"></script>
+    <script src="static/receiver.js"></script>
+    <script src="static/typeahead.js"></script>
     <script>
       document.addEventListener("htmx:beforeOnLoad", function (evt) {
         if (evt.detail.xhr.status == 401 || 409) {
@@ -15,7 +20,7 @@
       });
 
       /**
-       * Template extension
+       * Template extension (unused)
        *
        * Usage:
        * hx-get="/some/fake/url"
@@ -25,6 +30,12 @@
        * hx-template-run="js-code" (optional, js code to run before template is rendered)
        */
       htmx.defineExtension("template", {
+        onEvent: function (name, evt) {
+          if (name === "htmx:beforeSend") {
+            document.dispatchEvent(new Event("htmx:xhr:abort"));
+          }
+        },
+
         transformResponse: function (text, xhr, elt) {
           // get template
           const query = elt.getAttribute("hx-template");
