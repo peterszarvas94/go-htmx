@@ -8,9 +8,10 @@ import (
 	"strings"
 )
 
-// eg.: /api/v1/user/:id -> GET -> func
+// pattern -> method -> handlerFunc
+// eg.: /api/v1/user/:id -> GET -> GetUser
 type Router struct {
-	routes map[string]map[string]HandlerFunc
+	routes       map[string]map[string]HandlerFunc
 	staticPrefix string
 }
 
@@ -26,13 +27,12 @@ func (r *Router) SetStaticPath(prefix string) {
 	r.staticPrefix = prefix
 }
 
-// checks if the route and method are registered
-// if not, adds the route and method to the router
-// if so, returns the handler function
 func (r *Router) addRoute(method, pattern string, handler HandlerFunc) {
+	// adds new route if it doesn't exist
 	if _, ok := r.routes[pattern]; !ok {
 		r.routes[pattern] = make(map[string]HandlerFunc)
 	}
+	// overwrites the route if it already exists
 	r.routes[pattern][method] = handler
 }
 
@@ -52,13 +52,11 @@ func (r *Router) DELETE(pattern string, handler HandlerFunc) {
 	r.addRoute("DELETE", pattern, handler)
 }
 
-// implements the http.Handler interface
 func (router *Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path
 	method := r.Method
 
 	// handle static files
-	// eg.: /static/css/style.css is in path /static/css/style.css
 	if router.staticPrefix != "" && strings.HasPrefix(path, router.staticPrefix) {
 		fs := http.FileServer(http.Dir("static"))
 		staticHandler := http.StripPrefix(router.staticPrefix, fs)
@@ -72,18 +70,19 @@ func (router *Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if handler, exists := handlers[method]; exists {
 				handler(w, r, pattern)
 				return
-			} else {
-				// method not allowed
-				// eg.: GET /api/v1/user/1
-				// but the route is registered as POST /api/v1/user/:id
-				// so, the method is not allowed
-				http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			}
+
+			if method == "GET" {
+				MethodNotAllowed(w, r)
 				return
 			}
+
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
 		}
 	}
 
-	NotfoundHandler(w, r)
+	Notfound(w, r)
 }
 
 // pattern matching
