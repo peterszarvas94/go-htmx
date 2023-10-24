@@ -1,7 +1,8 @@
 {{define "content"}}
 <form
-  hx-post="/signup/"
+  hx-post="/signup"
   hx-target="body"
+  hx-push-url="true"
   class="flex flex-col gap-2 flex-wrap max-w-md"
 >
   <div
@@ -14,9 +15,10 @@
       value="{{.Username}}"
       class="rounded grow p-1"
       required
-      hx-get="/check/"
+      hx-get="/check"
       hx-trigger="keyup changed delay:500ms"
       hx-target="#username-check"
+      hx-push-url="false"
    />
     <div id="username-check">
       {{if and .Error .Exists.Username}}
@@ -39,9 +41,10 @@
       value="{{.Email}}"
       class="rounded grow p-1"
       required
-      hx-get="/check/"
+      hx-get="/check"
       hx-trigger="keyup changed delay:500ms"
       hx-target="#email-check"
+      hx-push-url="false"
     />
     <div id="email-check">
       {{if and .Error .Exists.Email}}

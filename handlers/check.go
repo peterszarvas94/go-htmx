@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"go-htmx/utils"
 	"html"
 	"html/template"
@@ -9,7 +8,7 @@ import (
 	"net/mail"
 )
 
-func CheckHandler(w http.ResponseWriter, r *http.Request) {
+func CheckUser(w http.ResponseWriter, r *http.Request, pattern string) {
 	// If the user is logged in, redirect them to the home page
 	session := utils.CheckSession(r)
 	if session.LoggedIn {
@@ -19,18 +18,6 @@ func CheckHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.Log(utils.INFO, "check/session", "User is not logged in")
-
-	// Only allow GET requests
-	if r.Method != "GET" {
-
-		message := fmt.Sprintf("Method %s not allowed", r.Method)
-		utils.Log(utils.ERROR, "check/method", message)
-
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
-	utils.Log(utils.INFO, "check/method", "Method allowed")
 
 	// Parse the "correct" and "incorrect" templates
 	correct := "templates/correct.html"
@@ -132,7 +119,4 @@ func CheckHandler(w http.ResponseWriter, r *http.Request) {
 		utils.Log(utils.INFO, "check/email/incorrect", "Template rendered successfully")
 		return
 	}
-
-	message := fmt.Sprintf("Method %s not allowed", r.Method)
-	utils.Log(utils.ERROR, "check/method", message)
 }

@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"go-htmx/utils"
 	"html"
 	"html/template"
@@ -9,108 +8,115 @@ import (
 	"time"
 )
 
-func SigninHandler(w http.ResponseWriter, r *http.Request) {
+func getSigninTmpl() (*template.Template, error) {
+	baseHtml := "templates/base.html"
+	signinHtml := "templates/signin.html"
+	errorHtml := "templates/error.html"
+
+	tmpl, tmplErr := template.ParseFiles(baseHtml, signinHtml, errorHtml)
+	if tmplErr != nil {
+		return nil, tmplErr
+	}
+
+	return tmpl, nil
+}
+
+func SigninPage(w http.ResponseWriter, r *http.Request, pattern string) {
 	session := utils.CheckSession(r)
 	if session.LoggedIn {
-		utils.Log(utils.ERROR, "signin/session", "User is already logged in")
+		utils.Log(utils.INFO, "signin/checkSession", "Already logged in, redirecting to index")
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 
-	utils.Log(utils.INFO, "signin/session", "User is not logged in")
+	utils.Log(utils.INFO, "signin/checkSession", "Not logged in")
 
-	baseHtml := "templates/base.html"
-	signinHtml := "templates/signin.html"
-	errorHtml := "templates/error.html"
-	tmpl, tmpl_err := template.ParseFiles(baseHtml, signinHtml, errorHtml)
-	if tmpl_err != nil {
-		utils.Log(utils.ERROR, "signin/tmpl", tmpl_err.Error())
+	tmpl, tmplErr := getSigninTmpl()
+	if tmplErr != nil {
+		utils.Log(utils.ERROR, "signin/signinTmpl", tmplErr.Error())
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 	}
 
-	utils.Log(utils.INFO, "signin/tmpl", "Template parsed successfully")
+	utils.Log(utils.INFO, "signin/signinTmpl", "Template parsed successfully")
 
-	if r.Method == "GET" {
-		utils.Log(utils.INFO, "signin/method", "Method is GET")
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	resErr := tmpl.Execute(w, nil)
+	if resErr != nil {
+		utils.Log(utils.ERROR, "signin/get/res", resErr.Error())
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+	}
 
-		res_err := tmpl.Execute(w, nil)
-		if res_err != nil {
-			utils.Log(utils.ERROR, "signin/res", res_err.Error())
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
-		}
+	utils.Log(utils.INFO, "signin/get/res", "Template rendered successfully")
+	return
+}
 
-		utils.Log(utils.INFO, "signin/res", "Template rendered successfully")
+func Signin(w http.ResponseWriter, r *http.Request, pattern string) {
+	formErr := r.ParseForm()
+	if formErr != nil {
+		utils.Log(utils.ERROR, "signin/parse", formErr.Error())
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
 
-	if r.Method == "POST" {
-		utils.Log(utils.INFO, "signin/method", "Method is POST")
+	utils.Log(utils.INFO, "signin/parse", "Form parsed successfully")
 
-		formErr := r.ParseForm()
-		if formErr != nil {
-			utils.Log(utils.ERROR, "signin/parse", formErr.Error())
+	user := html.EscapeString(r.FormValue("user"))
+	password := html.EscapeString(r.FormValue("password"))
+
+	userData, userErr := utils.LoginUser(user, password)
+	if userErr == nil {
+		jwt, jwtErr := utils.NewToken(userData.Id)
+		if jwtErr != nil {
+			utils.Log(utils.ERROR, "signin/jwt", jwtErr.Error())
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		utils.Log(utils.INFO, "signin/parse", "Form parsed successfully")
+		utils.Log(utils.INFO, "signin/jwt", "JWT created successfully")
 
-		user := html.EscapeString(r.FormValue("user"))
-		password := html.EscapeString(r.FormValue("password"))
+		expires := time.Unix(jwt.Expires, 0)
 
-		userData, userErr := utils.LoginUser(user, password)
-		if userErr == nil {
-			jwt, jwtErr := utils.NewToken(userData.Id)
-			if jwtErr != nil {
-				utils.Log(utils.ERROR, "signin/jwt", jwtErr.Error())
-				http.Error(w, "Internal server error", http.StatusInternalServerError)
-				return
-			}
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 
-			utils.Log(utils.INFO, "signin/jwt", "JWT created successfully")
+		http.SetCookie(w, &http.Cookie{
+			Name:     "jwt",
+			Value:    jwt.Token,
+			Path:     "/",
+			Expires:  expires,
+			HttpOnly: true,
+		})
 
-			expires := time.Unix(jwt.Expires, 0)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 
-			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-
-			http.SetCookie(w, &http.Cookie{
-				Name:    "jwt",
-				Value:   jwt.Token,
-				Path:    "/",
-				Expires: expires,
-				HttpOnly: true,
-			})
-
-			http.Redirect(w, r, "/", http.StatusSeeOther)
-
-			utils.Log(utils.INFO, "signin/res", "Redirected to /")
-			return
-		}
-
-		utils.Log(utils.WARNING, "signin/user", userErr.Error())
-
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		w.WriteHeader(http.StatusUnauthorized)
-
-		signinData := utils.SigninData{
-			User:  user,
-			Error: "Invalid username or password",
-		}
-
-		resErr := tmpl.Execute(w, signinData)
-		if resErr != nil {
-			utils.Log(utils.ERROR, "signin/res", resErr.Error())
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
-		}
-
-		utils.Log(utils.INFO, "signin/res", "Template rendered successfully")
+		utils.Log(utils.INFO, "signin/res", "Redirected to /")
 		return
 	}
 
-	http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	utils.Log(utils.WARNING, "signin/user", userErr.Error())
 
-	message := fmt.Sprintf("Method %s not allowed", r.Method)
-	utils.Log(utils.ERROR, "signin/method", message)
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.WriteHeader(http.StatusUnauthorized)
+
+	signinData := utils.SigninData{
+		User:  user,
+		Error: "Invalid username or password",
+	}
+
+	tmpl, tmplErr := getSigninTmpl()
+	if tmplErr != nil {
+		utils.Log(utils.ERROR, "signin/signinTmpl", tmplErr.Error())
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+	}
+
+	utils.Log(utils.INFO, "signin/signinTmpl", "Template parsed successfully")
+
+	resErr := tmpl.Execute(w, signinData)
+	if resErr != nil {
+		utils.Log(utils.ERROR, "signin/res", resErr.Error())
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+	}
+
+	utils.Log(utils.INFO, "signin/res", "Template rendered successfully")
+	return
 }

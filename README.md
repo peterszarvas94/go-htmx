@@ -28,8 +28,10 @@ To run make commands, you need to have:
 - [x] only logged in can create todo
 - [x] input sanitization and validation
 - [x] logger
-    - [ ] implement on every func
-- [x] rework 404 handling
-    - [ ] implement on every GET
-- [ ] better route handling
+  - [ ] implement on every func
+- [x] custom router
+  - [x] dynamic route segments (/todos/:id)
+  - [x] trailing slash handling (/todos = /todos/)
+  - [x] 404 handling
+  - [x] static folder serving
 - [x] add examples for custom elements

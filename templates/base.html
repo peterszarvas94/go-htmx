@@ -4,11 +4,11 @@
   <head>
     <title>Go Web Server</title>
     <script src="https://unpkg.com/htmx.org@1.9.5"></script>
-    <script src="static/counter.js"></script>
-    <script src="static/dropdown.js"></script>
-    <script src="static/updater.js"></script>
-    <script src="static/receiver.js"></script>
-    <script src="static/typeahead.js"></script>
+    <script src="/static/counter.js"></script>
+    <script src="/static/dropdown.js"></script>
+    <script src="/static/updater.js"></script>
+    <script src="/static/receiver.js"></script>
+    <script src="/static/typeahead.js"></script>
     <script>
       document.addEventListener("htmx:beforeOnLoad", function (evt) {
         if (evt.detail.xhr.status == 401 || 409) {

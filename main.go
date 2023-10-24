@@ -8,22 +8,24 @@ import (
 )
 
 func main() {
-	// handle static files
-	fs := http.FileServer(http.Dir("static"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	r := utils.NewRouter()
 
-	//handle favicon
-	http.Handle("/favicon.ico", http.NotFoundHandler())
+	// r.GET("/favicon.ico", handlers.Favicon)
+	r.GET("/", handlers.HomePage)
+	r.GET("/signup", handlers.SignupPage)
+	r.POST("/signup", handlers.NewUser)
+	r.GET("/signin", handlers.SigninPage)
+	r.POST("/signin", handlers.Signin)
+	r.POST("/signout", handlers.Signout)
+	r.POST("/todos", handlers.NewTodo)
+	r.DELETE("/todos/:id", handlers.DeleteTodo)
+	r.GET("/check", handlers.CheckUser)
 
-	// handle routes
-	http.HandleFunc("/", handlers.IndexHandler)
-	http.HandleFunc("/todos/", handlers.TodosHandler)
-	http.HandleFunc("/signup/", handlers.SignupHandler)
-	http.HandleFunc("/signin/", handlers.SigninHandler)
-	http.HandleFunc("/signout/", handlers.SignoutHandler)
-	http.HandleFunc("/check/", handlers.CheckHandler)
-	http.HandleFunc("/404/", handlers.NotfoundHandler)
-	err := http.ListenAndServe(":8080", nil)
+	r.SetStaticPath("/static")
+
+	r.ListRoutes()
+
+	err := http.ListenAndServe(":8080", r)
 	if err != nil {
 		utils.Log(utils.FATAL, "main/listen", err.Error())
 		os.Exit(1)
