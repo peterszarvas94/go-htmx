@@ -18,9 +18,11 @@
           evt.detail.shouldSwap = false;
         }
       });
-
+    </script>
+    <!--
+    <script>
       /**
-       * Template extension (unused)
+       * Template extension
        *
        * Usage:
        * hx-get="/some/fake/url"
@@ -29,6 +31,7 @@
        * hx-template-text="variable-name" (optional, variable come from url params)
        * hx-template-run="js-code" (optional, js code to run before template is rendered)
        */
+
       htmx.defineExtension("template", {
         onEvent: function (name, evt) {
           if (name === "htmx:beforeSend") {
@@ -83,6 +86,7 @@
         },
       });
     </script>
+    -->
     <link rel="stylesheet" type="text/css" href="/static/style.css" />
   </head>
 

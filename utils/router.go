@@ -1,10 +1,10 @@
 package utils
 
 import (
-	"fmt"
+	// "fmt"
 	"net/http"
-	"reflect"
-	"runtime"
+	// "reflect"
+	// "runtime"
 	"strings"
 )
 
@@ -123,11 +123,11 @@ func removeTrailingslash(path string) string {
 }
 
 // list all routes with path, method and handler function name
-func (router *Router) ListRoutes() {
-	for path, handlers := range router.routes {
-		for method, handlerFunc := range handlers {
-			handlerFuncName := runtime.FuncForPC(reflect.ValueOf(handlerFunc).Pointer()).Name()
-			fmt.Printf("%s %s -> %s\n", method, path, handlerFuncName)
-		}
-	}
-}
+// func (router *Router) ListRoutes() {
+// 	for path, handlers := range router.routes {
+// 		for method, handlerFunc := range handlers {
+// 			handlerFuncName := runtime.FuncForPC(reflect.ValueOf(handlerFunc).Pointer()).Name()
+// 			fmt.Printf("%s %s -> %s\n", method, path, handlerFuncName)
+// 		}
+// 	}
+// }

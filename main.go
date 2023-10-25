@@ -10,7 +10,7 @@ import (
 func main() {
 	r := utils.NewRouter()
 
-	// r.GET("/favicon.ico", handlers.Favicon)
+	r.GET("/favicon.ico", handlers.Favicon)
 	r.GET("/", handlers.HomePage)
 	r.GET("/signup", handlers.SignupPage)
 	r.POST("/signup", handlers.NewUser)
@@ -22,8 +22,6 @@ func main() {
 	r.GET("/check", handlers.CheckUser)
 
 	r.SetStaticPath("/static")
-
-	r.ListRoutes()
 
 	err := http.ListenAndServe(":8080", r)
 	if err != nil {
