@@ -18,6 +18,49 @@
           evt.detail.shouldSwap = false;
         }
       });
+
+      // "protected" extension to include authorization header
+      htmx.defineExtension("protected", {
+        onEvent: function (name, evt) {
+          if (name === "htmx:beforeRequest") {
+            evt.detail.xhr.setRequestHeader(
+              "Authorization",
+              "Bearer " + window["accessToken"],
+            );
+          }
+        },
+      });
+
+      let tryCount = 0;
+
+      // "token" extension to get access token from server
+      htmx.defineExtension("token", {
+        onEvent: function (name, evt) {
+          if (name === "htmx:load") {
+            if (window["accessToken"]) {
+              return;
+            }
+
+            const res = fetch("/refresh");
+            auth = res.headers?.get("Authorization");
+            if (auth) {
+              window["accessToken"] = auth.split(" ")[1];
+              console.log("token is set,", window["accessToken"]);
+              tryCount = 3;
+            }
+            if (tryCount < 3) {
+              console.log("trycount", tryCount);
+              htmx.ajax("GET", window.location.pathname, {
+                headers: {
+                  Authorization: "Bearer " + window["accessToken"],
+                },
+                target: "body",
+              });
+              tryCount++;
+            }
+          }
+        },
+      });
     </script>
     <!--
     <script>
@@ -90,7 +133,7 @@
     <link rel="stylesheet" type="text/css" href="/static/style.css" />
   </head>
 
-  <body class="flex flex-col p-2 gap-2">
+  <body class="flex flex-col p-2 gap-2" hx-ext="token">
     {{template "content" .}}
   </body>
 </html>

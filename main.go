@@ -20,6 +20,7 @@ func main() {
 	r.POST("/todos", handlers.NewTodo)
 	r.DELETE("/todos/:id", handlers.DeleteTodo)
 	r.GET("/check", handlers.CheckUser)
+	r.GET("/refresh", handlers.RefreshToken)
 
 	r.SetStaticPath("/static")
 

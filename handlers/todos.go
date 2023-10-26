@@ -17,6 +17,7 @@ func NewTodo(w http.ResponseWriter, r *http.Request, pattern string) {
 	if tmplErr != nil {
 		utils.Log(utils.ERROR, "todos/add/tmpl", tmplErr.Error())
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
 	}
 	utils.Log(utils.INFO, "todos/add/tmpl", "Template parsed successfully")
 
@@ -24,6 +25,7 @@ func NewTodo(w http.ResponseWriter, r *http.Request, pattern string) {
 	if !session.LoggedIn {
 		utils.Log(utils.ERROR, "todos/add/checkSession", "Unauthorized")
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
 	}
 
 	utils.Log(utils.INFO, "todos/add/checkSession", "Authorized")
@@ -92,5 +94,4 @@ func DeleteTodo(w http.ResponseWriter, r *http.Request, pattern string) {
 	}
 
 	utils.Log(utils.INFO, "todos/delete/deleteTodo", "Todo deleted successfully")
-	return
 }

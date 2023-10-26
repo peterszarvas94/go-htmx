@@ -10,6 +10,8 @@ import (
 func HomePage(w http.ResponseWriter, r *http.Request, pattern string) {
 	utils.Log(utils.INFO, "index/path", r.URL.Path)
 
+	fmt.Printf(r.Header.Get("Authorization"))
+
 	session := utils.CheckSession(r)
 
 	if session.LoggedIn {
