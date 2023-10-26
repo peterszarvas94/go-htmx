@@ -8,9 +8,9 @@ import (
 
 func Signout(w http.ResponseWriter, r *http.Request, pattern string) {
 	http.SetCookie(w, &http.Cookie{
-		Name:     "jwt",
+		Name:     "refresh",
 		Value:    "",
-		Path:     "/",
+		Path:     "/refresh",
 		Expires:  time.Now().Add(-1 * time.Hour),
 		HttpOnly: true,
 	})

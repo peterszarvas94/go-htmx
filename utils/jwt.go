@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"crypto/rand"
+	"encoding/base64"
 	"errors"
 	"os"
 	"strconv"
@@ -9,7 +11,39 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func NewToken(id int) (JWT, error) {
+type CSRF struct {
+	Token string
+}
+
+// Generate a new CSRF token
+func NewCSRFToken() (*CSRF, error) {
+	tokenBytes := make([]byte, 32)
+	_, err := rand.Read(tokenBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	// Encode the random bytes as a base64 string
+	token := base64.StdEncoding.EncodeToString(tokenBytes)
+
+	return &CSRF{
+		Token: token,
+	}, nil
+}
+
+// Validate a given token against a stored token
+func (c *CSRF) Validate(requestToken string) bool {
+	return c.Token == requestToken
+}
+
+type Token string
+
+const (
+	ACCESS  Token = "access"
+	REFRESH Token = "refresh"
+)
+
+func NewToken(id int, tokentype Token) (JWT, error) {
 	currentTime := time.Now().Unix()
 	expirationTime := currentTime + 3600
 
@@ -24,6 +58,7 @@ func NewToken(id int) (JWT, error) {
 		"iat": currentTime,
 		"exp": expirationTime,
 		"sub": idStr,
+		"typ": tokentype,
 	})
 
 	signedToken, signErr := token.SignedString([]byte(secret))

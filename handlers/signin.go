@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"net/http"
 	"time"
+	// "time"
 )
 
 func getSigninTmpl() (*template.Template, error) {
@@ -66,28 +67,41 @@ func Signin(w http.ResponseWriter, r *http.Request, pattern string) {
 
 	userData, userErr := utils.LoginUser(user, password)
 	if userErr == nil {
-		jwt, jwtErr := utils.NewToken(userData.Id)
-		if jwtErr != nil {
-			utils.Log(utils.ERROR, "signin/jwt", jwtErr.Error())
+		// accessToken, accessTokenErr := utils.NewToken(userData.Id, utils.ACCESS)
+		// if accessTokenErr != nil {
+		// 	utils.Log(utils.ERROR, "signin/access", accessTokenErr.Error())
+		// 	http.Error(w, "Internal server error", http.StatusInternalServerError)
+		// 	return
+		// }
+		//
+		// utils.Log(utils.INFO, "signin/jwt", "Access token created successfully")
+
+		refreshToken, refreshTokenErr := utils.NewToken(userData.Id, utils.REFRESH)
+		if refreshTokenErr != nil {
+			utils.Log(utils.ERROR, "signin/refresh", refreshTokenErr.Error())
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		utils.Log(utils.INFO, "signin/jwt", "JWT created successfully")
+		utils.Log(utils.INFO, "signin/jwt", "Refresh token created successfully")
 
-		expires := time.Unix(jwt.Expires, 0)
+		expires := time.Unix(refreshToken.Expires, 0)
 
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 
 		http.SetCookie(w, &http.Cookie{
-			Name:     "jwt",
-			Value:    jwt.Token,
-			Path:     "/",
+			Name:     "refresh",
+			Value:    refreshToken.Token,
+			Path:     "/refresh",
 			Expires:  expires,
 			HttpOnly: true,
+			// Secure:   true,
+			// SameSite: http.SameSiteLaxMode,
 		})
 
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		// w.Header().Set("Authorization", "Bearer "+accessToken.Token)
+
+ 		http.Redirect(w, r, "/", http.StatusSeeOther)
 
 		utils.Log(utils.INFO, "signin/res", "Redirected to /")
 		return
