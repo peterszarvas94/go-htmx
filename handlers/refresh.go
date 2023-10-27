@@ -34,8 +34,16 @@ func RefreshTokenHandler(w http.ResponseWriter, r *http.Request, pattern string)
 		return
 	}
 
+	// get new access token
+	accessToken, accessTokenErr := utils.NewToken(userIdInt, utils.Access)
+	if accessTokenErr != nil {
+		utils.Log(utils.ERROR, "refresh/token", accessTokenErr.Error())
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
 	// get new refresh token as well
-	refreshToken, refreshTokenErr := utils.NewToken(userIdInt, utils.REFRESH)
+	refreshToken, refreshTokenErr := utils.NewToken(userIdInt, utils.Refresh)
 	if refreshTokenErr != nil {
 		utils.Log(utils.ERROR, "refresh/token", refreshTokenErr.Error())
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -48,6 +56,7 @@ func RefreshTokenHandler(w http.ResponseWriter, r *http.Request, pattern string)
 
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 
+	// set the new refresh token cookie
 	http.SetCookie(w, &http.Cookie{
 		Name:     "refresh",
 		Value:    refreshToken.Token,
@@ -58,7 +67,7 @@ func RefreshTokenHandler(w http.ResponseWriter, r *http.Request, pattern string)
 		// SameSite: http.SameSiteLaxMode,
 	})
 
-	// send access token
-	w.Header().Set("Authorization", "Bearer "+token)
+	// send access token in header
+	w.Header().Set("Authorization", "Bearer "+accessToken.Token)
 	w.WriteHeader(http.StatusOK)
 }

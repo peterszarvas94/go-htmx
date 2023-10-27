@@ -67,28 +67,27 @@ func SigninHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 
 	userData, userErr := utils.LoginUser(user, password)
 	if userErr == nil {
-		// accessToken, accessTokenErr := utils.NewToken(userData.Id, utils.ACCESS)
-		// if accessTokenErr != nil {
-		// 	utils.Log(utils.ERROR, "signin/access", accessTokenErr.Error())
-		// 	http.Error(w, "Internal server error", http.StatusInternalServerError)
-		// 	return
-		// }
-		//
-		// utils.Log(utils.INFO, "signin/jwt", "Access token created successfully")
+		accessToken, accessTokenErr := utils.NewToken(userData.Id, utils.Access)
+		if accessTokenErr != nil {
+			utils.Log(utils.ERROR, "signin/access", accessTokenErr.Error())
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
 
-		refreshToken, refreshTokenErr := utils.NewToken(userData.Id, utils.REFRESH)
+		utils.Log(utils.INFO, "signin/access", "Access token created successfully")
+
+		refreshToken, refreshTokenErr := utils.NewToken(userData.Id, utils.Refresh)
 		if refreshTokenErr != nil {
 			utils.Log(utils.ERROR, "signin/refresh", refreshTokenErr.Error())
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		utils.Log(utils.INFO, "signin/jwt", "Refresh token created successfully")
+		utils.Log(utils.INFO, "signin/refresh", "Refresh token created successfully")
 
 		expires := time.Unix(refreshToken.Expires, 0)
 
-		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-
+		// set the refresh token cookie
 		http.SetCookie(w, &http.Cookie{
 			Name:     "refresh",
 			Value:    refreshToken.Token,
@@ -99,9 +98,13 @@ func SigninHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 			// SameSite: http.SameSiteLaxMode,
 		})
 
-		// w.Header().Set("Authorization", "Bearer "+accessToken.Token)
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 
- 		http.Redirect(w, r, "/", http.StatusSeeOther)
+		// set the access token header
+		w.Header().Set("Authorization", "Bearer "+accessToken.Token)
+
+		// for client-side redirection
+		w.Header().Set("HX-Redirect", "/")
 
 		utils.Log(utils.INFO, "signin/res", "Redirected to /")
 		return

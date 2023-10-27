@@ -11,6 +11,10 @@ import (
 	_ "github.com/libsql/libsql-client-go/libsql"
 )
 
+/*
+db is a function that returns a connection to the database.
+It uses the DB_URL and DB_TOKEN environment variables to connect to the database.
+*/
 func db() (*sql.DB, error) {
 	url, urlFound := os.LookupEnv("DB_URL")
 	if !urlFound {
@@ -32,6 +36,9 @@ func db() (*sql.DB, error) {
 	return db, nil
 }
 
+/*
+GetTodos is a function that returns all todos from the database.
+*/
 func GetTodos() ([]TodoData, error) {
 	db, dbErr := db()
 	if dbErr != nil {
@@ -63,6 +70,9 @@ func GetTodos() ([]TodoData, error) {
 	return todos, nil
 }
 
+/*
+AddTodo is a function that adds a new todo to the database.
+*/
 func AddTodo(newText string, r *http.Request) (NewTodoData, error) {
 	db, dbErr := db()
 	if dbErr != nil {
@@ -100,6 +110,9 @@ func AddTodo(newText string, r *http.Request) (NewTodoData, error) {
 	return todo, nil
 }
 
+/*
+GetTodoById is a function that returns a todo from the database by id.
+*/
 func GetTodoById(id int) (TodoData, error) {
 	db, dbErr := db()
 	if dbErr != nil {
@@ -131,6 +144,9 @@ func GetTodoById(id int) (TodoData, error) {
 	return todo, nil
 }
 
+/*
+DeleteTodoById is a function that deletes a todo from the database by id.
+*/
 func DeleteTodoById(id int) error {
 	db, dbErr := db()
 	if dbErr != nil {
@@ -193,6 +209,10 @@ func AddUser(newUsername string, newEmail string, newPassword string) (UserData,
 	return user, nil
 }
 
+/*
+LoginUser is a function that returns a user from the database by username or email,
+and checks if the passwords match.
+*/
 func LoginUser(usernameOrEmail string, password string) (UserData, error) {
 	db, dbErr := db()
 	if dbErr != nil {
@@ -238,6 +258,9 @@ func LoginUser(usernameOrEmail string, password string) (UserData, error) {
 
 }
 
+/*
+GetUserById is a function that returns a user from the database by id.
+*/
 func GetUserById(id string) (UserData, error) {
 	db, dbErr := db()
 	if dbErr != nil {
@@ -274,6 +297,9 @@ func GetUserById(id string) (UserData, error) {
 	return user, nil
 }
 
+/*
+GetUserByUsername is a function that returns a user from the database by username.
+*/
 func GetUserByUsername(username string) (UserData, error) {
 	db, dbErr := db()
 	if dbErr != nil {
@@ -309,6 +335,9 @@ func GetUserByUsername(username string) (UserData, error) {
 	return user, nil
 }
 
+/*
+GetUserByEmail is a function that returns a user from the database by email.
+*/
 func GetUserByEmail(email string) (UserData, error) {
 	db, dbErr := db()
 	if dbErr != nil {

@@ -94,4 +94,6 @@ func DeleteTodoHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	}
 
 	utils.Log(utils.INFO, "todos/delete/deleteTodo", "Todo deleted successfully")
+
+	w.WriteHeader(http.StatusNoContent)
 }
