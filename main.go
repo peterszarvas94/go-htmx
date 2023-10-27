@@ -10,17 +10,17 @@ import (
 func main() {
 	r := utils.NewRouter()
 
-	r.GET("/favicon.ico", handlers.Favicon)
-	r.GET("/", handlers.HomePage)
-	r.GET("/signup", handlers.SignupPage)
-	r.POST("/signup", handlers.NewUser)
-	r.GET("/signin", handlers.SigninPage)
-	r.POST("/signin", handlers.Signin)
-	r.POST("/signout", handlers.Signout)
-	r.POST("/todos", handlers.NewTodo)
-	r.DELETE("/todos/:id", handlers.DeleteTodo)
-	r.GET("/check", handlers.CheckUser)
-	r.GET("/refresh", handlers.RefreshToken)
+	r.GET("/favicon.ico", handlers.FaviconHandler)
+	r.GET("/", handlers.HomePageHandler)
+	r.GET("/signup", handlers.SignupPageHandler)
+	r.POST("/signup", handlers.NewUserHandler)
+	r.GET("/signin", handlers.SigninPageHandler)
+	r.POST("/signin", handlers.SigninHandler)
+	r.POST("/signout", handlers.SignoutHandler)
+	r.POST("/todos", handlers.NewTodoHandler)
+	r.DELETE("/todos/:id", handlers.DeleteTodoHandler)
+	r.GET("/check", handlers.CheckUserHandler)
+	r.POST("/refresh", handlers.RefreshTokenHandler)
 
 	r.SetStaticPath("/static")
 

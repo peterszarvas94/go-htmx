@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func HomePage(w http.ResponseWriter, r *http.Request, pattern string) {
+func HomePageHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	utils.Log(utils.INFO, "index/path", r.URL.Path)
 
 	fmt.Printf(r.Header.Get("Authorization"))

@@ -22,7 +22,7 @@ func getSigninTmpl() (*template.Template, error) {
 	return tmpl, nil
 }
 
-func SigninPage(w http.ResponseWriter, r *http.Request, pattern string) {
+func SigninPageHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	session := utils.CheckSession(r)
 	if session.LoggedIn {
 		utils.Log(utils.INFO, "signin/checkSession", "Already logged in, redirecting to index")
@@ -52,7 +52,7 @@ func SigninPage(w http.ResponseWriter, r *http.Request, pattern string) {
 	return
 }
 
-func Signin(w http.ResponseWriter, r *http.Request, pattern string) {
+func SigninHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	formErr := r.ParseForm()
 	if formErr != nil {
 		utils.Log(utils.ERROR, "signin/parse", formErr.Error())

@@ -8,7 +8,7 @@ import (
 	"net/mail"
 )
 
-func CheckUser(w http.ResponseWriter, r *http.Request, pattern string) {
+func CheckUserHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	// If the user is logged in, redirect them to the home page
 	session := utils.CheckSession(r)
 	if session.LoggedIn {

@@ -1,5 +1,5 @@
 {{define "delete"}}
-  <button hx-delete="/todos/{{.Id}}" hx-target="closest li">
+  <button hx-delete="/todos/{{.Id}}" hx-target="closest li" hx-ext="protected">
     <svg
       stroke="currentColor"
       fill="currentColor"

@@ -19,44 +19,57 @@
         }
       });
 
+      let accessToken = undefined;
+
       // "protected" extension to include authorization header
       htmx.defineExtension("protected", {
         onEvent: function (name, evt) {
           if (name === "htmx:beforeRequest") {
             evt.detail.xhr.setRequestHeader(
               "Authorization",
-              "Bearer " + window["accessToken"],
+              "Bearer " + accessToken,
             );
           }
         },
       });
 
-      let tryCount = 0;
+      htmx.defineExtension("signout", {
+        onEvent: function (name, evt) {
+          if (name === "htmx:afterRequest") {
+            if (evt.detail.xhr.status == 200) {
+              accessToken = undefined;
+            }
+          }
+        },
+      });
 
       // "token" extension to get access token from server
       htmx.defineExtension("token", {
-        onEvent: function (name, evt) {
-          if (name === "htmx:load") {
-            if (window["accessToken"]) {
+        onEvent: async function (name, evt) {
+          const eventLoad = name === "htmx:load";
+          const eventSwap = name === "htmx:beforeSwap";
+
+          const eventToken = eventLoad || eventSwap;
+
+          if (eventToken && evt.target === document.body) {
+            if (accessToken) {
               return;
             }
 
-            const res = fetch("/refresh");
-            auth = res.headers?.get("Authorization");
-            if (auth) {
-              window["accessToken"] = auth.split(" ")[1];
-              console.log("token is set,", window["accessToken"]);
-              tryCount = 3;
-            }
-            if (tryCount < 3) {
-              console.log("trycount", tryCount);
-              htmx.ajax("GET", window.location.pathname, {
-                headers: {
-                  Authorization: "Bearer " + window["accessToken"],
-                },
-                target: "body",
-              });
-              tryCount++;
+            try {
+              const res = await fetch("/refresh", { method: "POST" });
+              auth = res.headers.get("Authorization");
+              if (auth) {
+                accessToken = auth.split(" ")[1];
+                htmx.ajax("GET", window.location.pathname, {
+                  headers: {
+                    Authorization: "Bearer " + accessToken,
+                  },
+                  target: "body",
+                });
+              }
+            } catch (e) {
+              console.log(e);
             }
           }
         },

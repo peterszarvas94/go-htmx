@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-func NewTodo(w http.ResponseWriter, r *http.Request, pattern string) {
+func NewTodoHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	todoHtml := "templates/todo.html"
 	deleteHtml := "templates/delete.html"
 	newTodoHtml := "templates/new-todo.html"
@@ -61,7 +61,7 @@ func NewTodo(w http.ResponseWriter, r *http.Request, pattern string) {
 	utils.Log(utils.INFO, "todos/add/res", "Template rendered successfully")
 }
 
-func DeleteTodo(w http.ResponseWriter, r *http.Request, pattern string) {
+func DeleteTodoHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	variables := utils.GetPathVariables(r.URL.Path, pattern)
 	idStr, exists := variables["id"]
 	if !exists {

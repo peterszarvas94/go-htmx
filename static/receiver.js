@@ -10,7 +10,6 @@ class receiverElement extends HTMLElement {
     `;
 
     document.addEventListener("ce-update", () => {
-      console.log("ce-update received");
       this.count++;
       this.querySelector("#receiver").innerText = `Event received: ${this.count}`;
     });

@@ -23,7 +23,7 @@ func getSignupTmpl() (*template.Template, error) {
 	return tmpl, nil
 }
 
-func SignupPage(w http.ResponseWriter, r *http.Request, pattern string) {
+func SignupPageHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	session := utils.CheckSession(r)
 	if session.LoggedIn {
 		utils.Log(utils.INFO, "signup/checkSession", "Already logged in, redirecting to index")
@@ -53,7 +53,7 @@ func SignupPage(w http.ResponseWriter, r *http.Request, pattern string) {
 	return
 }
 
-func NewUser(w http.ResponseWriter, r *http.Request, pattern string) {
+func NewUserHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	formErr := r.ParseForm()
 	if formErr != nil {
 		utils.Log(utils.ERROR, "signup/add/form", formErr.Error())

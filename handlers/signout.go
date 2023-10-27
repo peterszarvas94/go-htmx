@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func Signout(w http.ResponseWriter, r *http.Request, pattern string) {
+func SignoutHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	http.SetCookie(w, &http.Cookie{
 		Name:     "refresh",
 		Value:    "",

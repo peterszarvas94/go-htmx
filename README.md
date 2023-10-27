@@ -35,3 +35,7 @@ To run make commands, you need to have:
   - [x] 404 handling
   - [x] static folder serving
 - [x] add examples for custom elements
+- [x] csrf protection
+  - [x] access token in memory (js cariable)
+  - [x] refresh token in cookie
+  - [x] page send a /refresh request on load with thwe refresh token
