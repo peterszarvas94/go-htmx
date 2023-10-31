@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"net/http"
 )
 
@@ -25,7 +24,6 @@ func CheckSession(r *http.Request) SessionData {
 	}
 
 	token := authHeader[len("Bearer "):]
-	fmt.Printf(token)
 
 	claims, jwtErr := ValidateToken(token)
 	userId, subErr := claims.GetSubject()

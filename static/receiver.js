@@ -2,6 +2,7 @@ class receiverElement extends HTMLElement {
   constructor() {
     super();
     this.count = 0;
+    this.eventName = "";
   }
 
   connectedCallback() {
@@ -9,7 +10,9 @@ class receiverElement extends HTMLElement {
       <div id="receiver">Event received: ${this.count}</div>
     `;
 
-    document.addEventListener("ce-update", () => {
+    this.eventName = this.getAttribute("ce-event");
+
+    document.addEventListener(this.eventName, () => {
       this.count++;
       this.querySelector("#receiver").innerText = `Event received: ${this.count}`;
     });

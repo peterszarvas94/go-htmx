@@ -10,7 +10,6 @@ import (
 func main() {
 	r := utils.NewRouter()
 
-	r.GET("/favicon.ico", handlers.FaviconHandler)
 	r.GET("/", handlers.HomePageHandler)
 	r.GET("/signup", handlers.SignupPageHandler)
 	r.POST("/signup", handlers.NewUserHandler)

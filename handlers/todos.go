@@ -12,8 +12,9 @@ func NewTodoHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	todoHtml := "templates/todo.html"
 	deleteHtml := "templates/delete.html"
 	newTodoHtml := "templates/new-todo.html"
+	loadingHtml := "templates/loading.html"
 
-	tmpl, tmplErr := template.ParseFiles(newTodoHtml, todoHtml, deleteHtml)
+	tmpl, tmplErr := template.ParseFiles(newTodoHtml, todoHtml, deleteHtml, loadingHtml)
 	if tmplErr != nil {
 		utils.Log(utils.ERROR, "todos/add/tmpl", tmplErr.Error())
 		http.Error(w, "Internal server error", http.StatusInternalServerError)

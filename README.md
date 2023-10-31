@@ -39,3 +39,5 @@ To run make commands, you need to have:
   - [x] access token in memory (js cariable)
   - [x] refresh token in cookie
   - [x] page send a /refresh request on load with thwe refresh token
+- [ ] loading states
+- [x] fix: delete

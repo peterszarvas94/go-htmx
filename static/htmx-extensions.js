@@ -1,4 +1,4 @@
-// "auth" extansion to render error messages on forms
+// "auth" extension to render error messages on forms
 htmx.defineExtension("auth", {
   onEvent: function (name, evt) {
     if (name == "htmx:beforeOnLoad") {
@@ -15,10 +15,17 @@ htmx.defineExtension("auth", {
   },
 });
 
-//
-// delete?
+// "delete" extension to delete elements
+htmx.defineExtension("delete", {
+  onEvent: function (_name, evt) {
+    const status = evt?.detail?.xhr?.status;
+    if (status === 204) {
+      evt.detail.shouldSwap = true;
+    }
+  },
+});
 
-// "error" extansion to prevent swap on 500 error
+// "error" extension to prevent swap on 500 error
 htmx.defineExtension("error", {
   onEvent: function (_name, evt) {
     const erroStatus = evt?.detail?.xhr?.status;

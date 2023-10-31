@@ -1,6 +1,7 @@
 class updaterElement extends HTMLElement {
   constructor() {
     super();
+    this.eventName = "";
   }
 
   connectedCallback() {
@@ -8,10 +9,17 @@ class updaterElement extends HTMLElement {
       <button id="updater-button" class="cursor-pointer">🔄</button>
     `;
 
+    this.eventName = this.getAttribute("ce-event");
+
     this.querySelector("#updater-button").addEventListener("click", () => {
-      const evt = new Event("ce-update");
+      if (!this.eventName) {
+        console.error("No event name specified");
+        return;
+      }
+      const evt = new Event(this.eventName);
       document.dispatchEvent(evt);
     });
+
   }
 }
 

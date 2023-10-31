@@ -9,52 +9,66 @@ class typeaheadElement extends HTMLElement {
     const itemsHtml = items
       .map(
         (item) => `
-          <li ce-text="${item}" ce-selected="false">
-            <button>${item}</button>
+          <li class="w-full" ce-text="${item}" ce-selected="false">
+            <button class="w-full text-left">${item}</button>
           </li>
         `,
       )
       .join("");
 
     this.innerHTML = `
-      <input class="border"/>
-      <ul class="hidden">${itemsHtml}</ul>
+      <input class="border border-black rounded-sm w-40"/>
+      <ul class="hidden w-40 border absolute bg-white">${itemsHtml}</ul>
     `;
 
     const input = this.querySelector("input");
     const buttons = this.querySelectorAll("button");
     const list = this.querySelectorAll("li");
 
-    // open on focus
-    input.addEventListener("focus", () => {
-      this.open = true;
-      this.updateOpen();
-    });
-
     // change bg on hover
     list.forEach((item) => {
       item.addEventListener("mouseenter", () => {
-        this.clearSelection();
-        item.setAttribute("ce-selected", true);
-        this.updateBg();
+        this.selectItem(item);
+        this.updateStyle();
       });
 
       item.addEventListener("mouseleave", () => {
         this.clearSelection();
-        this.updateBg();
+        this.updateStyle();
       });
+    });
+
+    input.addEventListener("focus", () => {
+      this.updateOpen(true);
+    });
+
+    input.addEventListener("click", () => {
+      this.updateOpen(true);
     });
 
     // track key presses
     input.addEventListener("keyup", (event) => {
+      if (event.key === "Escape") {
+        // close list
+        this.updateOpen(false);
+        return;
+      }
+
       if (event.key === "Enter") {
+        if (!this.open) {
+          // open list
+          this.updateOpen(true);
+          return;
+        }
+
         // accept selection
         const selected = this.querySelector(
-          "li:not(.hidden)[ce-selected=true]",
+          'li:not(.hidden)[ce-selected="true"]',
         );
-        if (selected) {
-          input.value = selected.innerText;
+        if (!selected) {
+          return;
         }
+        input.value = selected.innerText;
         this.updateList();
         return;
       }
@@ -78,6 +92,9 @@ class typeaheadElement extends HTMLElement {
       // filter list
       this.updateList();
       const first = this.getItem(0);
+      if (!first) {
+        return;
+      }
       this.selectItem(first);
     });
 
@@ -94,15 +111,27 @@ class typeaheadElement extends HTMLElement {
     document.addEventListener("click", (event) => {
       const isOutside = !this.contains(event.target);
       if (isOutside) {
-        this.open = false;
-        this.updateOpen();
+        this.updateOpen(false);
+      }
+    });
+
+    // close on tab
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Tab") {
+        this.updateOpen(false);
       }
     });
   }
 
   // open/close list
-  updateOpen() {
-    this.querySelector("ul").classList.toggle("hidden", !this.open);
+  updateOpen(bool) {
+    this.open = bool;
+    this.querySelector("ul").classList.toggle("hidden", !bool);
+    const first = this.getItem(0);
+    if (!first) {
+      return;
+    }
+    this.selectItem(first);
   }
 
   // filter list
@@ -117,13 +146,16 @@ class typeaheadElement extends HTMLElement {
   }
 
   // add coloring on arrow navigation
-  updateBg() {
+  updateStyle() {
     const list = this.querySelectorAll("li");
+    const classes = ["bg-blue-600", "text-white"];
     list.forEach((item) => {
-      item.classList.toggle(
-        "bg-gray-200",
-        item.getAttribute("ce-selected") === "true",
-      );
+      classes.forEach((className) => {
+        item.classList.toggle(
+          className,
+          item.getAttribute("ce-selected") === "true",
+        );
+      });
     });
   }
 
@@ -175,7 +207,7 @@ class typeaheadElement extends HTMLElement {
   selectItem(item) {
     this.clearSelection();
     item.setAttribute("ce-selected", true);
-    this.updateBg();
+    this.updateStyle();
   }
 }
 

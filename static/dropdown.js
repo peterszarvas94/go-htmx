@@ -5,17 +5,14 @@ class dropdownElement extends HTMLElement {
   }
 
   connectedCallback() {
-    const attrOpen = this.getAttribute("open");
-    if (attrOpen === "true") {
-      this.open = true;
-    }
+    const items = this.getAttribute("items").split(",");
+
+    const itemsHtml = items.map((item) => `<li>${item}</li>`).join("");
 
     this.innerHTML = `
       <button id="dropdown-button" class="cursor-pointer">🔽</button>
-      <ul id="dropdown-content" class="hidden">
-        <li>Item 1</li>
-        <li>Item 2</li>
-        <li>Item 3</li>
+      <ul id="dropdown-content" class="hidden border absolute bg-white">
+        ${itemsHtml}
       </ul>
     `;
 
@@ -35,7 +32,10 @@ class dropdownElement extends HTMLElement {
   }
 
   updateOpen() {
-    this.querySelector("#dropdown-content").classList.toggle("hidden", !this.open);
+    this.querySelector("#dropdown-content").classList.toggle(
+      "hidden",
+      !this.open,
+    );
     this.querySelector("#dropdown-button").innerText = this.open ? "🔼" : "🔽";
   }
 }

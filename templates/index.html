@@ -1,4 +1,8 @@
-{{define "content"}} {{if not .Session.LoggedIn}}
+{{define "content"}}
+
+<h1 class="font-bold text-3xl py-4">GO x HTMX</h1>
+
+{{if not .Session.LoggedIn}}
 
 <div class="flex items-center gap-2 flex-wrap">
   <a
@@ -38,8 +42,9 @@
 </div>
 <form
   hx-post="/todos"
-  hx-target="#todos"
-  hx-swap="beforeend"
+  hx-target="#todos li:last-child"
+  hx-swap="beforebegin"
+  hx-indicator="#spinner"
   hx-ext="protected"
   hx-on::after-request="this.reset();"
   class="flex gap-2 flex-wrap"
@@ -61,25 +66,28 @@
 
 {{end}}
 
-<h1 class="font-bold text-xl">Todos</h1>
+<h2 class="font-bold text-xl py-4">Todos</h2>
 
 {{template "todos" .}}
 
-<h1 class="font-bold text-xl">Custom elements</h1>
+<h2 class="font-bold text-xl py-4">Custom elements for client-side scripting</h2>
 
 <!-- custom element -->
 
-<h2 class="font-bold pb-1">Counter</h2>
+<h3 class="font-bold pb-1">Counter</h3>
 <ce-counter start="2"></ce-counter>
 
-<h2 class="font-bold pt-2">Dropdown</h2>
-<ce-dropdown></ce-dropdown>
+<h3 class="font-bold pt-2">Events</h3>
+<ce-updater ce-event="test-event"></ce-updater>
+<ce-receiver ce-event="test-event"></ce-receiver>
 
-<h2 class="font-bold pt-2">Event dispatcher and receiver</h2>
-<ce-updater></ce-updater>
-<ce-receiver></ce-receiver>
+<h3 class="font-bold pt-2">Signals</h3>
+<ce-signaler></ce-signaler>
 
-<h2 class="font-bold pt-2">Typeahead</h2>
+<h3 class="font-bold pt-2">Dropdown</h3>
+<ce-dropdown items="apple,banana,melon,strawberry,cherry"></ce-dropdown>
+
+<h3 class="font-bold pt-2">Typeahead</h3>
 <ce-typeahead items="apple,banana,melon,strawberry,cherry"></ce-typeahead>
 
 {{end}}

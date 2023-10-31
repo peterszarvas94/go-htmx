@@ -1,10 +1,5 @@
-{{template "new-todo" .}}
-
-{{define "new-todo"}}
-  <li class="flex gap-2">
-    {{if .Session.LoggedIn}}
-      {{template "delete" .}}
-    {{end}}
-    {{template "todo" .}}
-  </li>
+{{template "new-todo" .}} {{define "new-todo"}}
+<li class="flex gap-2">
+  {{if .Session.LoggedIn}} {{template "delete" .}} {{end}} {{template "todo" .}}
+</li>
 {{end}}

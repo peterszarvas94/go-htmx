@@ -10,8 +10,6 @@ import (
 func HomePageHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	utils.Log(utils.INFO, "index/path", r.URL.Path)
 
-	fmt.Printf(r.Header.Get("Authorization"))
-
 	session := utils.CheckSession(r)
 
 	if session.LoggedIn {
@@ -27,8 +25,9 @@ func HomePageHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	todosHtml := "templates/todos.html"
 	todoHtml := "templates/todo.html"
 	deleteHtml := "templates/delete.html"
+	loading := "templates/loading.html"
 
-	tmpl, tmplErr := template.ParseFiles(baseHtml, indexHtml, todosHtml, todoHtml, deleteHtml)
+	tmpl, tmplErr := template.ParseFiles(baseHtml, indexHtml, todosHtml, todoHtml, deleteHtml, loading)
 	if tmplErr != nil {
 		utils.Log(utils.ERROR, "index/tmpl", tmplErr.Error())
 		http.Error(w, "Intenal server error at tmpl", http.StatusInternalServerError)
