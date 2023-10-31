@@ -7,6 +7,10 @@ import (
 	"time"
 )
 
+/*
+RefreshTokenHandler gets a new access token and refresh token
+if the refresh token is valid.
+*/
 func RefreshTokenHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	cookies := r.Cookies()
 	var token string
@@ -16,13 +20,34 @@ func RefreshTokenHandler(w http.ResponseWriter, r *http.Request, pattern string)
 		}
 	}
 
+	if token == "" {
+		utils.Log(utils.WARNING, "refresh/token", "No refresh token found")
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	utils.Log(utils.INFO, "refresh/token", "Refresh token received")
+
 	// check if refresh token is valid
 	claims, jwtErr := utils.ValidateToken(token)
 	userId, subErr := claims.GetSubject()
 	_, dbErr := utils.GetUserById(userId)
 
+	if jwtErr != nil {
+		utils.Log(utils.ERROR, "refresh/jwt", jwtErr.Error())
+	}
+
+	if subErr != nil {
+		utils.Log(utils.ERROR, "refresh/sub", subErr.Error())
+	}
+
+	if dbErr != nil {
+		utils.Log(utils.ERROR, "refresh/db", dbErr.Error())
+	}
+
 	loggedIn := jwtErr == nil && subErr == nil && dbErr == nil
 	if !loggedIn {
+		utils.Log(utils.ERROR, "refresh/token", "Refresh token invalid")
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}

@@ -18,7 +18,7 @@ const (
 
 const maxLoglevel = int(FATAL)
 
-// Returns the string representation of the loglevel
+//Returns the string representation of the loglevel
 func llToString(ll Loglevel) string {
 	switch ll {
 	case INFO:
@@ -34,6 +34,7 @@ func llToString(ll Loglevel) string {
 	}
 }
 
+//Returns the Loglevel from the string representation
 func llToEnum(ll string) Loglevel {
 	switch ll {
 	case "INFO":

@@ -8,6 +8,9 @@ import (
 	"strconv"
 )
 
+/*
+NewTodoHandler handles the POST request to /todos/add.
+*/
 func NewTodoHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	todoHtml := "templates/todo.html"
 	deleteHtml := "templates/delete.html"
@@ -20,6 +23,7 @@ func NewTodoHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
+
 	utils.Log(utils.INFO, "todos/add/tmpl", "Template parsed successfully")
 
 	session := utils.CheckSession(r)
@@ -62,6 +66,9 @@ func NewTodoHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	utils.Log(utils.INFO, "todos/add/res", "Template rendered successfully")
 }
 
+/*
+DeleteTodoHandler handles the DELETE request to /todos/:id.
+*/
 func DeleteTodoHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	variables := utils.GetPathVariables(r.URL.Path, pattern)
 	idStr, exists := variables["id"]

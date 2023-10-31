@@ -1,5 +1,7 @@
 package utils
 
+// Types used in multiple files
+
 type UserData struct {
 	Id       int
 	Username string

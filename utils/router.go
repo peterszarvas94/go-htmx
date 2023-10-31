@@ -8,8 +8,11 @@ import (
 	"strings"
 )
 
-// pattern -> method -> handlerFunc
-// eg.: /api/v1/user/:id -> GET -> GetUser
+/*
+Router struct.
+Maps: pattern -> method -> handlerFunc.
+Eg.: /api/v1/user/:id -> GET -> GetUserHandler
+*/
 type Router struct {
 	routes       map[string]map[string]HandlerFunc
 	staticPrefix string
@@ -17,16 +20,26 @@ type Router struct {
 
 type HandlerFunc func(http.ResponseWriter, *http.Request, string)
 
+/*
+Utility function for creating a new router.
+*/
 func NewRouter() *Router {
 	return &Router{
 		routes: make(map[string]map[string]HandlerFunc),
 	}
 }
 
+/*
+SetStaticPath sets the static path for serving static files.
+Static files should be put in the static folder.
+*/
 func (r *Router) SetStaticPath(prefix string) {
 	r.staticPrefix = prefix
 }
 
+/*
+Utility function for adding a new route to the router.
+*/
 func (r *Router) addRoute(method, pattern string, handler HandlerFunc) {
 	// adds new route if it doesn't exist
 	if _, ok := r.routes[pattern]; !ok {
@@ -36,22 +49,37 @@ func (r *Router) addRoute(method, pattern string, handler HandlerFunc) {
 	r.routes[pattern][method] = handler
 }
 
+/*
+Adds a new GET route to the router.
+*/
 func (r *Router) GET(pattern string, handler HandlerFunc) {
 	r.addRoute("GET", pattern, handler)
 }
 
+/*
+Adds a new POST route to the router.
+*/
 func (r *Router) POST(pattern string, handler HandlerFunc) {
 	r.addRoute("POST", pattern, handler)
 }
 
+/*
+Adds a new PUT route to the router.
+*/
 func (r *Router) PUT(pattern string, handler HandlerFunc) {
 	r.addRoute("PUT", pattern, handler)
 }
 
+/*
+Adds a new DELETE route to the router.
+*/
 func (r *Router) DELETE(pattern string, handler HandlerFunc) {
 	r.addRoute("DELETE", pattern, handler)
 }
 
+/*
+ServeHTTP is mandatory
+*/
 func (router *Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path
 	method := r.Method
@@ -85,8 +113,10 @@ func (router *Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	Notfound(w, r)
 }
 
-// pattern matching
-// eg.: /api/v1/user/:id -> /api/v1/user/1/
+/*
+Url pattern matching.
+Eg.: /api/v1/user/:id -> /api/v1/user/1/
+*/
 func matches(pattern, path string) bool {
 
 	// remove trailing slash

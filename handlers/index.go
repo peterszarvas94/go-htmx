@@ -7,6 +7,9 @@ import (
 	"net/http"
 )
 
+/*
+Handler for home page "/".
+*/
 func HomePageHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	utils.Log(utils.INFO, "index/path", r.URL.Path)
 

@@ -9,6 +9,9 @@ import (
 	// "time"
 )
 
+/*
+getSigninTmpl helper function to parse the signin template.
+*/
 func getSigninTmpl() (*template.Template, error) {
 	baseHtml := "templates/base.html"
 	signinHtml := "templates/signin.html"
@@ -22,6 +25,9 @@ func getSigninTmpl() (*template.Template, error) {
 	return tmpl, nil
 }
 
+/*
+SigninPageHandler handles the GET request to /signin.
+*/
 func SigninPageHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	session := utils.CheckSession(r)
 	if session.LoggedIn {
@@ -52,15 +58,18 @@ func SigninPageHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	return
 }
 
+/*
+SigninHandler handles the POST request to /signin.
+*/
 func SigninHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	formErr := r.ParseForm()
 	if formErr != nil {
-		utils.Log(utils.ERROR, "signin/parse", formErr.Error())
+		utils.Log(utils.ERROR, "signin/post/parse", formErr.Error())
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
 
-	utils.Log(utils.INFO, "signin/parse", "Form parsed successfully")
+	utils.Log(utils.INFO, "signin/post/parse", "Form parsed successfully")
 
 	user := html.EscapeString(r.FormValue("user"))
 	password := html.EscapeString(r.FormValue("password"))
@@ -69,21 +78,21 @@ func SigninHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	if userErr == nil {
 		accessToken, accessTokenErr := utils.NewToken(userData.Id, utils.Access)
 		if accessTokenErr != nil {
-			utils.Log(utils.ERROR, "signin/access", accessTokenErr.Error())
+			utils.Log(utils.ERROR, "signin/post/access", accessTokenErr.Error())
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		utils.Log(utils.INFO, "signin/access", "Access token created successfully")
+		utils.Log(utils.INFO, "signin/post/access", "Access token created successfully")
 
 		refreshToken, refreshTokenErr := utils.NewToken(userData.Id, utils.Refresh)
 		if refreshTokenErr != nil {
-			utils.Log(utils.ERROR, "signin/refresh", refreshTokenErr.Error())
+			utils.Log(utils.ERROR, "signin/post/refresh", refreshTokenErr.Error())
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		utils.Log(utils.INFO, "signin/refresh", "Refresh token created successfully")
+		utils.Log(utils.INFO, "signin/post/refresh", "Refresh token created successfully")
 
 		expires := time.Unix(refreshToken.Expires, 0)
 
@@ -106,11 +115,11 @@ func SigninHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 		// for client-side redirection
 		w.Header().Set("HX-Redirect", "/")
 
-		utils.Log(utils.INFO, "signin/res", "Redirected to /")
+		utils.Log(utils.INFO, "signin/post/res", "Redirected to /")
 		return
 	}
 
-	utils.Log(utils.WARNING, "signin/user", userErr.Error())
+	utils.Log(utils.WARNING, "signin/post/errorUser", userErr.Error())
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.WriteHeader(http.StatusUnauthorized)
@@ -122,18 +131,18 @@ func SigninHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 
 	tmpl, tmplErr := getSigninTmpl()
 	if tmplErr != nil {
-		utils.Log(utils.ERROR, "signin/signinTmpl", tmplErr.Error())
+		utils.Log(utils.ERROR, "signin/post/errorTmpl", tmplErr.Error())
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 	}
 
-	utils.Log(utils.INFO, "signin/signinTmpl", "Template parsed successfully")
+	utils.Log(utils.INFO, "signin/post/errorTmpl", "Template parsed successfully")
 
 	resErr := tmpl.Execute(w, signinData)
 	if resErr != nil {
-		utils.Log(utils.ERROR, "signin/res", resErr.Error())
+		utils.Log(utils.ERROR, "signin/post/errorRes", resErr.Error())
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 	}
 
-	utils.Log(utils.INFO, "signin/res", "Template rendered successfully")
+	utils.Log(utils.INFO, "signin/post/errorRes", "Template rendered successfully")
 	return
 }

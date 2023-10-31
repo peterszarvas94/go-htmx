@@ -5,6 +5,9 @@ import (
 	"net/http"
 )
 
+/*
+Notfound handles the 404 error.
+*/
 func Notfound(w http.ResponseWriter, r *http.Request) {
 	baseHtml := "templates/base.html"
 	notfoundHtml := "templates/404.html"
@@ -30,6 +33,9 @@ func Notfound(w http.ResponseWriter, r *http.Request) {
 	Log(INFO, "notfound/res", "Template rendered successfully")
 }
 
+/*
+MethodNotAllowed handles the 405 error.
+*/
 func MethodNotAllowed(w http.ResponseWriter, r *http.Request) {
 	baseHtml := "templates/base.html"
 	notallowedHtml := "templates/405.html"

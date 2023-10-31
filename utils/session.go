@@ -4,17 +4,10 @@ import (
 	"net/http"
 )
 
+/*
+CheckSession checks if the user is logged in.
+*/
 func CheckSession(r *http.Request) SessionData {
-	//rewrite for auth header, not cookie :)
-
-	// cookies := r.Cookies()
-	// var token string
-	// for _, cookie := range cookies {
-	// 	if cookie.Name == "jwt" {
-	// 		token = cookie.Value
-	// 	}
-	// }
-
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
 		return SessionData{

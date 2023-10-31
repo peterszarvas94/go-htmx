@@ -8,6 +8,10 @@ import (
 	"net/mail"
 )
 
+/*
+CheckUserHandler checks if the username or email is taken.
+Sends icons.
+*/
 func CheckUserHandler(w http.ResponseWriter, r *http.Request, pattern string) {
 	// If the user is logged in, redirect them to the home page
 	session := utils.CheckSession(r)
