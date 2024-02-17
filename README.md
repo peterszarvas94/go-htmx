@@ -1,4 +1,6 @@
-# HTTG
+# ARCHIVED
+
+This repo is archived in favor of [goth-boilerplate](https://github.com/peterszarvas94/goth-boilerplate)
 
 - Htmx for interactivity
 - Turso db
